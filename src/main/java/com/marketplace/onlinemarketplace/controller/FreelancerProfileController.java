@@ -1,9 +1,6 @@
 package com.marketplace.onlinemarketplace.controller;
 
-import com.marketplace.onlinemarketplace.entity.ClientProfile;
-import com.marketplace.onlinemarketplace.entity.FreelancerProfile;
-import com.marketplace.onlinemarketplace.entity.FreelancerRequest;
-import com.marketplace.onlinemarketplace.entity.User;
+import com.marketplace.onlinemarketplace.entity.*;
 import com.marketplace.onlinemarketplace.service.FreelancerProfileService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -15,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/freelancer")
@@ -101,6 +99,16 @@ public class FreelancerProfileController {
             return ResponseEntity.ok(freelancerProfiles);
         } catch (Exception e) {
             return ResponseEntity.status(400).body(null);
+        }
+    }
+
+    @GetMapping("/review")
+    public ResponseEntity getReview(@RequestParam String freelancerName) {
+        try{
+            List<Review> review = freelancerProfileService.getReviewbyFreelancerName(freelancerName);
+            return ResponseEntity.ok(review);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
 }

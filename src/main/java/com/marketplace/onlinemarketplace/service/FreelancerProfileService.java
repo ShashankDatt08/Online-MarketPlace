@@ -3,8 +3,10 @@ package com.marketplace.onlinemarketplace.service;
 
 import com.marketplace.onlinemarketplace.entity.FreelancerProfile;
 import com.marketplace.onlinemarketplace.entity.FreelancerRequest;
+import com.marketplace.onlinemarketplace.entity.Review;
 import com.marketplace.onlinemarketplace.entity.User;
 import com.marketplace.onlinemarketplace.repository.FreelancerProfileRepo;
+import com.marketplace.onlinemarketplace.repository.ReviewRepo;
 import com.marketplace.onlinemarketplace.repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.actuate.autoconfigure.metrics.SystemMetricsAutoConfiguration;
@@ -23,8 +25,12 @@ public class FreelancerProfileService {
 
     @Autowired
     private UserRepo userRepo;
+
     @Autowired
     private SystemMetricsAutoConfiguration systemMetricsAutoConfiguration;
+
+    @Autowired
+    private ReviewRepo reviewRepo;
 
     public FreelancerProfile createProfile(FreelancerRequest request) {
         User user = userRepo.findById(request.getUserId()).orElseThrow(() -> new RuntimeException("User not found"));
@@ -96,5 +102,17 @@ public class FreelancerProfileService {
 
     public List<FreelancerProfile> getAllClientProfile() {
         return freelancerProfileRepo.findAll();
+    }
+
+    public List<Review> getReviewbyFreelancerName(String freelancerName) {
+
+        List<Review> review = reviewRepo.findByFreelancerName(freelancerName);
+
+        if(review.isEmpty()) {
+            throw new RuntimeException("No Review found for " + freelancerName);
+        }
+
+        return review;
+
     }
 }

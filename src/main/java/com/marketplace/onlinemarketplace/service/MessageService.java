@@ -36,7 +36,7 @@ public class MessageService {
     @Autowired
     private BidRepo bidRepo;
 
-    @Value("${aws.sqs.queue.url}")
+    @Value("${AWS_SQS_QUEUE_URL}")
     private String queueUrl;
 
     public Message sendMessage(Long senderId, Long receiverId, String content) {
