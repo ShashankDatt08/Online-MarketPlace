@@ -2,9 +2,11 @@ package com.marketplace.onlinemarketplace.service;
 
 
 import com.marketplace.onlinemarketplace.entity.Bid;
+import com.marketplace.onlinemarketplace.entity.Conversation;
 import com.marketplace.onlinemarketplace.entity.Projects;
 import com.marketplace.onlinemarketplace.entity.User;
 import com.marketplace.onlinemarketplace.repository.BidRepo;
+import com.marketplace.onlinemarketplace.mongoRepo.ConversationRepo;
 import com.marketplace.onlinemarketplace.repository.ProjectRepo;
 import com.marketplace.onlinemarketplace.repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,8 +31,15 @@ public class BidService {
     @Autowired
     private UserRepo userRepo;
 
+    @Autowired
+    private ConversationRepo conversationRepo;
+
     public Bid createBids(Long projectId, Long freelancerId, Long amount, String proposal) {
         Projects project = projectRepo.findById(projectId).orElseThrow(() -> new RuntimeException("Project not found"));
+
+        if(project.getStatus() == Projects.Status.CLOSED || project.getStatus() == Projects.Status.INPROGRESS){
+            throw new RuntimeException("Can't place bids as the project is not available");
+        }
 
         Optional<User> user = userRepo.findById(freelancerId);
         if (user.get().getRole() != User.Role.FREELANCER) {
@@ -76,6 +85,7 @@ public class BidService {
             throw new RuntimeException("Bid already accepted for this project");
         }
         bid.setStatus(Bid.BidStatus.ACCEPTED);
+        projects.setStatus(Projects.Status.INPROGRESS);
         bidRepo.save(bid);
 
         List<Bid> otherBids = bidRepo.findByProjectIdAndStatus(bid.getProjectId(), Bid.BidStatus.PENDING);

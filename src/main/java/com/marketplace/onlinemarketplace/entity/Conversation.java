@@ -2,27 +2,25 @@ package com.marketplace.onlinemarketplace.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import org.springframework.data.mongodb.core.index.CompoundIndex;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "conversations", uniqueConstraints = {
-        @UniqueConstraint(columnNames = {"userId1", "userId2"})
-})
+@Document(collection = "conversations")
+@CompoundIndex(name = "user_pair_idx", def = "{'userId1': 1, 'userId2': 1}", unique = true)
 @Data
 public class Conversation {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
 
-    @Column(nullable = false)
     private Long userId1;
 
-    @Column(nullable = false)
     private Long userId2;
 
-    @Column(nullable = false)
     private LocalDateTime lastMessageTimestamp;
 
+    private Long projectId;
 }

@@ -5,16 +5,18 @@ import jakarta.persistence.Table;
 import lombok.Data;
 
 import jakarta.persistence.*;
+import org.springframework.data.mongodb.core.mapping.Document;
+
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "messages")
+@Document(collection = "messages")
 @Data
 public class Message {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
 
     @Column(nullable = false)
     private Long senderId;
@@ -37,6 +39,8 @@ public class Message {
         DELIVERED,
         READ
     }
+
+    private String conversationId;
 
 
 }
