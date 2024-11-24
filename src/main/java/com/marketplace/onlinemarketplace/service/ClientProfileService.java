@@ -87,6 +87,7 @@ public class ClientProfileService {
     }
 
     public List<ClientProfile> getAllClientProfile() {
-       return clientProfileRepo.findAll();
+        return clientProfileRepo.findAll();
+
     }
 }
