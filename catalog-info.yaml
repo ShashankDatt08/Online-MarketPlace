@@ -1,0 +1,15 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: BidService
+  description: Online-Marketplace application.
+  annotations:
+    # gitpod.io/host: gitpod.io
+    github.com/project-slug: ShashankDatt08/Online-MarketPlace
+    jira/project-key: 'SCRUM'
+    jira/label: backstage-component:BidService
+
+spec:
+  type: application
+  owner: ICS
+  lifecycle: experimental
