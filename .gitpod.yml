@@ -3,4 +3,4 @@ tasks:
     init: |
       git fetch origin featureBranch
       git checkout featureBranch
-      code --install-extension ./ai-testcase-generator-0.0.1.vsix
+      code --install-extension ./testcase-generator-0.0.2.vsix
