@@ -98,11 +98,5 @@ public class BidService {
         }
         return bid;
     }
-
-
-    public List<Bid> getAllBids() {
-        List<Bid> bids = bidRepo.findAll();
-        return bids;
-    }
 }
 
