@@ -1,3 +1,10 @@
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 package com.marketplace.onlinemarketplace.service;
 
 
@@ -98,5 +105,79 @@ public class BidService {
         }
         return bid;
     }
-}
 
+
+
+    public class BidServiceTest {
+
+        @InjectMocks
+        private BidService bidService;
+
+        @Mock
+        private BidRepository bidRepository;
+
+        @BeforeEach
+        public void setup() {
+            MockitoAnnotations.openMocks(this);
+        }
+
+        @Test
+        public void testCreateBid_NullInput() {
+            assertThrows(IllegalArgumentException.class, () -> bidService.createBid(null));
+        }
+
+        @Test
+        public void testCreateBid_InvalidInput() {
+            Bid bid = new Bid();
+            bid.setAmount(-1);
+            assertThrows(IllegalArgumentException.class, () -> bidService.createBid(bid));
+        }
+
+        @Test
+        public void testCreateBid_ValidInput() {
+            Bid bid = new Bid();
+            bid.setAmount(100);
+            when(bidRepository.save(any(Bid.class))).thenReturn(bid);
+            Bid result = bidService.createBid(bid);
+            assertEquals(bid, result);
+        }
+
+        @Test
+        public void testGetBid_NullInput() {
+            assertThrows(IllegalArgumentException.class, () -> bidService.getBid(null));
+        }
+
+        @Test
+        public void testGetBid_InvalidInput() {
+            when(bidRepository.findById(anyLong())).thenReturn(Optional.empty());
+            assertThrows(BidNotFoundException.class, () -> bidService.getBid(1L));
+        }
+
+        @Test
+        public void testGetBid_ValidInput() {
+            Bid bid = new Bid();
+            bid.setAmount(100);
+            when(bidRepository.findById(anyLong())).thenReturn(Optional.of(bid));
+            Bid result = bidService.getBid(1L);
+            assertEquals(bid, result);
+        }
+
+        @Test
+        public void testDeleteBid_NullInput() {
+            assertThrows(IllegalArgumentException.class, () -> bidService.deleteBid(null));
+        }
+
+        @Test
+        public void testDeleteBid_InvalidInput() {
+            doThrow(new EmptyResultDataAccessException(1)).when(bidRepository).deleteById(anyLong());
+            assertThrows(BidNotFoundException.class, () -> bidService.deleteBid(1L));
+        }
+
+        @Test
+        public void testDeleteBid_ValidInput() {
+            doNothing().when(bidRepository).deleteById(anyLong());
+            assertDoesNotThrow(() -> bidService.deleteBid(1L));
+        }
+    }
+
+}
