@@ -1,3 +1,5 @@
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 package com.marketplace.onlinemarketplace.service;
 
 
@@ -98,5 +100,52 @@ public class BidService {
         }
         return bid;
     }
-}
 
+    Without the actual `BidService` class, it's hard to provide specific test cases. However, I'll provide a general structure for testing a hypothetical `BidService` class that has methods for creating, updating, deleting, and retrieving bids.
+
+    ```java
+
+    class BidServiceTest {
+
+        private BidService bidService = new BidService();
+
+        @Test
+        void testCreateBid() {
+            Bid bid = new Bid();
+            // set properties of bid
+            Bid createdBid = bidService.createBid(bid);
+            assertNotNull(createdBid);
+            // assert other properties
+        }
+
+        @Test
+        void testUpdateBid() {
+            Bid bid = new Bid();
+            // set properties of bid
+            Bid updatedBid = bidService.updateBid(bid);
+            assertNotNull(updatedBid);
+            // assert other properties
+        }
+
+        @Test
+        void testDeleteBid() {
+            Bid bid = new Bid();
+            // set properties of bid
+            boolean isDeleted = bidService.deleteBid(bid);
+            assertTrue(isDeleted);
+        }
+
+        @Test
+        void testGetBid() {
+            Bid bid = new Bid();
+            // set properties of bid
+            Bid retrievedBid = bidService.getBid(bid.getId());
+            assertNotNull(retrievedBid);
+            // assert other properties
+        }
+    }
+    ```
+
+    This is a basic structure for testing a `BidService` class. You would need to replace the `Bid` class and its methods with the actual ones from your application. Also, you would need to add more assertions to check if the returned objects have the expected properties.
+
+}
