@@ -1,3 +1,10 @@
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 package com.marketplace.onlinemarketplace.service;
 
 
@@ -98,5 +105,80 @@ public class BidService {
         }
         return bid;
     }
-}
 
+
+
+    public class BidServiceTest {
+
+        @InjectMocks
+        private BidService bidService;
+
+        @Mock
+        private BidRepository bidRepository;
+
+        @BeforeEach
+        public void setup() {
+            MockitoAnnotations.openMocks(this);
+        }
+
+        @Test
+        public void testGetAllBids() {
+            bidService.getAllBids();
+            verify(bidRepository, times(1)).findAll();
+        }
+
+        @Test
+        public void testGetBidById() {
+            Long id = 1L;
+            bidService.getBidById(id);
+            verify(bidRepository, times(1)).findById(id);
+        }
+
+        @Test
+        public void testGetBidByIdNotFound() {
+            Long id = 1L;
+            when(bidRepository.findById(id)).thenReturn(null);
+            assertThrows(BidNotFoundException.class, () -> bidService.getBidById(id));
+        }
+
+        @Test
+        public void testCreateBid() {
+            Bid bid = new Bid();
+            bidService.createBid(bid);
+            verify(bidRepository, times(1)).save(bid);
+        }
+
+        @Test
+        public void testUpdateBid() {
+            Bid bid = new Bid();
+            bid.setId(1L);
+            when(bidRepository.existsById(bid.getId())).thenReturn(true);
+            bidService.updateBid(bid);
+            verify(bidRepository, times(1)).save(bid);
+        }
+
+        @Test
+        public void testUpdateBidNotFound() {
+            Bid bid = new Bid();
+            bid.setId(1L);
+            when(bidRepository.existsById(bid.getId())).thenReturn(false);
+            assertThrows(BidNotFoundException.class, () -> bidService.updateBid(bid));
+        }
+
+        @Test
+        public void testDeleteBid() {
+            Long id = 1L;
+            when(bidRepository.existsById(id)).thenReturn(true);
+            bidService.deleteBid(id);
+            verify(bidRepository, times(1)).deleteById(id);
+        }
+
+        @Test
+        public void testDeleteBidNotFound() {
+            Long id = 1L;
+            when(bidRepository.existsById(id)).thenReturn(false);
+            assertThrows(BidNotFoundException.class, () -> bidService.deleteBid(id));
+        }
+    }
+
+}
