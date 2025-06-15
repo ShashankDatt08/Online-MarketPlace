@@ -98,5 +98,9 @@ public class BidService {
         }
         return bid;
     }
-}
 
+    public List<Bid> getAllBidsById(Long id) {
+        return bidRepo.findById(id).orElse(Collections.emptyList());
+    }
+
+}
