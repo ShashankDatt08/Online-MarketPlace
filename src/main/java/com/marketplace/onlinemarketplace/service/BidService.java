@@ -98,5 +98,9 @@ public class BidService {
         }
         return bid;
     }
-}
 
+    public List<Bid> getAllBids() {
+        return bidRepo.findAll();
+    }
+
+}
