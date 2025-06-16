@@ -98,5 +98,9 @@ public class BidService {
         }
         return bid;
     }
-}
 
+    public Optional<Bid> getBidsById(Long bidId) {
+        return bidRepo.findById(bidId);
+    }
+
+}
