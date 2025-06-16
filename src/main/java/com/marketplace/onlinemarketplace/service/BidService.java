@@ -1,3 +1,8 @@
+import com.marketplace.onlinemarketplace.entity.Bid;
+import com.marketplace.onlinemarketplace.repository.BidRepo;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import java.util.List;
 package com.marketplace.onlinemarketplace.service;
 
 
@@ -98,5 +103,22 @@ public class BidService {
         }
         return bid;
     }
-}
 
+
+
+    @Service
+    public class BidService {
+
+        @Autowired
+        private BidRepo bidRepo;
+
+        public List<Bid> getAllBidsById(Long id) {
+            try {
+                return bidRepo.findById(id);
+            } catch (Exception e) {
+                throw new RuntimeException("Error while fetching bids", e);
+            }
+        }
+    }
+
+}
