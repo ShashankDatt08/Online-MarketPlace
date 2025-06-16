@@ -98,5 +98,41 @@ public class BidService {
         }
         return bid;
     }
-}
 
+    @Service
+    public class BidService {
+
+        @Autowired
+        private BidRepo bidRepo;
+
+        @Autowired
+        private ProjectService projectService;
+
+        @Autowired
+        private ProjectRepo projectRepo;
+
+        @Autowired
+        private UserRepo userRepo;
+
+        @Autowired
+        private ConversationRepo conversationRepo;
+
+
+        public void deleteAllBids() {
+            try {
+                bidRepo.deleteAll();
+            } catch (Exception e) {
+                throw new RuntimeException("Failed to delete all bids", e);
+            }
+        }
+
+        public void deleteBidById(Long bidId) {
+            try {
+                bidRepo.deleteById(bidId);
+            } catch (Exception e) {
+                throw new RuntimeException("Failed to delete bid with id: " + bidId, e);
+            }
+        }
+    }
+
+}
