@@ -1,3 +1,4 @@
+import org.springframework.dao.DataAccessException;
 package com.marketplace.onlinemarketplace.service;
 
 
@@ -98,5 +99,33 @@ public class BidService {
         }
         return bid;
     }
-}
 
+
+    @Service
+    public class BidService {
+
+        @Autowired
+        private BidRepo bidRepo;
+
+        // Other autowired instances...
+
+        // Existing methods...
+
+        public void deleteAllBids() {
+            try {
+                bidRepo.deleteAll();
+            } catch (DataAccessException e) {
+                throw new RuntimeException("Error occurred while deleting all bids", e);
+            }
+        }
+
+        public void deleteBidById(Long bidId) {
+            try {
+                bidRepo.deleteById(bidId);
+            } catch (DataAccessException e) {
+                throw new RuntimeException("Error occurred while deleting bid with id: " + bidId, e);
+            }
+        }
+    }
+
+}
