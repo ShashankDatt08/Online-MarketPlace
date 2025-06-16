@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+import java.util.List;
 package com.marketplace.onlinemarketplace.service;
 
 
@@ -98,5 +100,34 @@ public class BidService {
         }
         return bid;
     }
-}
 
+
+    @Service
+    public class BidService {
+
+        @Autowired
+        private BidRepo bidRepo;
+
+        @Autowired
+        private ProjectService projectService;
+
+        @Autowired
+        private ProjectRepo projectRepo;
+
+        @Autowired
+        private UserRepo userRepo;
+
+        @Autowired
+        private ConversationRepo conversationRepo;
+
+
+        public List<Bid> getAllBidsById(Long id) {
+            try {
+                return bidRepo.findById(id).orElse(new ArrayList<>());
+            } catch (Exception e) {
+                throw new RuntimeException("Error occurred while fetching bids", e);
+            }
+        }
+    }
+
+}
