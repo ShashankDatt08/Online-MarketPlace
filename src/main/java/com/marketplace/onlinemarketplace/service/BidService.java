@@ -98,5 +98,9 @@ public class BidService {
         }
         return bid;
     }
-}
 
+    public Bid getBidById(Long bidId) {
+        return bidRepo.findById(bidId).orElseThrow(() -> new RuntimeException("Bid not found"));
+    }
+
+}
