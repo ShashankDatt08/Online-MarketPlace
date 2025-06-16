@@ -1,3 +1,5 @@
+import java.util.List;
+import java.util.NoSuchElementException;
 package com.marketplace.onlinemarketplace.service;
 
 
@@ -98,5 +100,14 @@ public class BidService {
         }
         return bid;
     }
-}
 
+
+    public List<Bid> getAllBidsById(Long id) {
+        try {
+            return bidRepo.findById(id).orElseThrow(() -> new NoSuchElementException("No bids found for the given ID"));
+        } catch (Exception e) {
+            throw new RuntimeException("Error occurred while retrieving bids", e);
+        }
+    }
+
+}
