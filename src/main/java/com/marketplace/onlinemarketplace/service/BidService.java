@@ -98,5 +98,26 @@ public class BidService {
         }
         return bid;
     }
-}
 
+    public void deleteAllBids() {
+        try {
+            bidRepo.deleteAll();
+        } catch (Exception e) {
+            throw new RuntimeException("Error occurred while deleting all bids: " + e.getMessage());
+        }
+    }
+
+    public void deleteBidById(Long bidId) {
+        try {
+            Optional<Bid> bid = bidRepo.findById(bidId);
+            if (bid.isPresent()) {
+                bidRepo.deleteById(bidId);
+            } else {
+                throw new RuntimeException("Bid not found with id: " + bidId);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("Error occurred while deleting bid: " + e.getMessage());
+        }
+    }
+
+}
