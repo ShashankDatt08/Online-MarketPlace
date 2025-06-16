@@ -1,3 +1,6 @@
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.server.ResponseStatusException;
 package com.marketplace.onlinemarketplace.service;
 
 
@@ -98,5 +101,34 @@ public class BidService {
         }
         return bid;
     }
-}
 
+
+    @Service
+    public class BidService {
+
+
+        public ResponseEntity<String> deleteAllBids() {
+            try {
+                bidRepo.deleteAll();
+                return new ResponseEntity<>("All bids have been deleted successfully.", HttpStatus.OK);
+            } catch (Exception e) {
+                throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "An error occurred while deleting all bids.", e);
+            }
+        }
+
+        public ResponseEntity<String> deleteBidById(Long bidId) {
+            try {
+                Optional<Bid> bid = bidRepo.findById(bidId);
+                if (bid.isPresent()) {
+                    bidRepo.deleteById(bidId);
+                    return new ResponseEntity<>("Bid with ID: " + bidId + " has been deleted successfully.", HttpStatus.OK);
+                } else {
+                    return new ResponseEntity<>("Bid with ID: " + bidId + " does not exist.", HttpStatus.NOT_FOUND);
+                }
+            } catch (Exception e) {
+                throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "An error occurred while deleting the bid with ID: " + bidId, e);
+            }
+        }
+    }
+
+}
