@@ -98,5 +98,13 @@ public class BidService {
         }
         return bid;
     }
-}
 
+    public List<Bid> getAllBidsByBidId(Long bidId) {
+        List<Bid> bids = bidRepo.findByBidId(bidId);
+        if (bids.isEmpty()) {
+            throw new RuntimeException("No bids found for the provided ID");
+        }
+        return bids;
+    }
+
+}
