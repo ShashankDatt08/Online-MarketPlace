@@ -98,5 +98,10 @@ public class BidService {
         }
         return bid;
     }
-}
 
+    public Optional<List<Bid>> getAllBidsById(Long bidId) {
+        List<Bid> bids = bidRepo.findById(bidId);
+        return Optional.ofNullable(bids);
+    }
+
+}
