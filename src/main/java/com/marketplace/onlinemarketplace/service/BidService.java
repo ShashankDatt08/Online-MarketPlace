@@ -1,3 +1,7 @@
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 package com.marketplace.onlinemarketplace.service;
 
 
@@ -98,5 +102,52 @@ public class BidService {
         }
         return bid;
     }
-}
 
+
+    @Service
+    public class BidService {
+
+        @Autowired
+        private BidRepo bidRepo;
+
+        @Autowired
+        private ProjectService projectService;
+
+        @Autowired
+        private ProjectRepo projectRepo;
+
+        @Autowired
+        private UserRepo userRepo;
+
+        @Autowired
+        private ConversationRepo conversationRepo;
+
+        // Existing methods...
+
+        @DeleteMapping("/bids")
+        public ResponseEntity<String> deleteAllBids() {
+            try {
+                bidRepo.deleteAll();
+                return new ResponseEntity<>("All bids have been successfully deleted.", HttpStatus.OK);
+            } catch (Exception e) {
+                return new ResponseEntity<>("An error occurred while deleting all bids.", HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+        }
+
+        @DeleteMapping("/bids/{id}")
+        public ResponseEntity<String> deleteBidById(@PathVariable Long id) {
+            try {
+                Optional<Bid> bid = bidRepo.findById(id);
+                if (bid.isPresent()) {
+                    bidRepo.deleteById(id);
+                    return new ResponseEntity<>("Bid with id " + id + " has been successfully deleted.", HttpStatus.OK);
+                } else {
+                    return new ResponseEntity<>("Bid with id " + id + " not found.", HttpStatus.NOT_FOUND);
+                }
+            } catch (Exception e) {
+                return new ResponseEntity<>("An error occurred while deleting the bid with id " + id + ".", HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+        }
+    }
+
+}
