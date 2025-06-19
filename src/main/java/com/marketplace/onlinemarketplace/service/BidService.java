@@ -98,5 +98,14 @@ public class BidService {
         }
         return bid;
     }
-}
 
+    public List<Bid> getAllBidsById(Long id) {
+        Optional<List<Bid>> bids = Optional.ofNullable(bidRepo.findByFreelancerId(id));
+        if(bids.isPresent()) {
+            return bids.get();
+        } else {
+            throw new RuntimeException("No Bids found for the given ID");
+        }
+    }
+
+}
