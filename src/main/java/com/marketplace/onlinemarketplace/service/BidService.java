@@ -98,5 +98,13 @@ public class BidService {
         }
         return bid;
     }
-}
 
+    public Optional<Bid> getBidById(Long bidId) {
+        Optional<Bid> bid = bidRepo.findById(bidId);
+        if (!bid.isPresent()) {
+            throw new RuntimeException("Bid not found");
+        }
+        return bid;
+    }
+
+}
