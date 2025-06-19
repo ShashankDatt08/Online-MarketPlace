@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 package com.marketplace.onlinemarketplace.service;
 
 
@@ -98,5 +99,16 @@ public class BidService {
         }
         return bid;
     }
-}
 
+
+    public List<Bid> getBidsById(Long id) {
+        List<Bid> bids = new ArrayList<>();
+        try {
+            bids = bidRepo.findById(id);
+        } catch (Exception e) {
+            throw new RuntimeException("No bids found for the given ID");
+        }
+        return bids;
+    }
+
+}
