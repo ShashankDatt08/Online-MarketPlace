@@ -62,30 +62,4 @@ public class RegistrationController {
         return ResponseEntity.ok("Logout successful.");
     }
 
-    @PostMapping("/changepassword")
-    public ResponseEntity<String> changePassword(
-            @RequestParam String email,
-            @RequestParam String currentPassword,
-            @RequestParam String newPassword,
-            @RequestParam String confirmPassword
-    ) {
-
-        User user = userService.findByEmail(email);
-        if (user == null) {
-            throw new RuntimeException("User not found");
-        }
-
-        if (!bCryptPasswordEncoder.matches(currentPassword, user.getPassword())) {
-            return ResponseEntity.badRequest().body("Current Password is Incorrect.");
-        }
-
-        if (!newPassword.equals(confirmPassword)) {
-            return ResponseEntity.badRequest().body("New password and confirm password do not match.");
-        }
-
-        userService.changePassword(email, newPassword, confirmPassword);
-        return ResponseEntity.ok("Password changed successfully.");
-
-    }
-
-}
+   
