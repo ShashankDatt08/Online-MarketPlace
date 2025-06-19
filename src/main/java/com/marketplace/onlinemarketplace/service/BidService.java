@@ -1,3 +1,5 @@
+import java.util.List;
+import org.springframework.dao.EmptyResultDataAccessException;
 package com.marketplace.onlinemarketplace.service;
 
 
@@ -98,5 +100,14 @@ public class BidService {
         }
         return bid;
     }
-}
 
+
+    public List<Bid> getAllBidsByBidId(Long bidId) {
+        try {
+            return bidRepo.findByBidId(bidId);
+        } catch (EmptyResultDataAccessException e) {
+            throw new RuntimeException("No bids found for the given ID");
+        }
+    }
+
+}
