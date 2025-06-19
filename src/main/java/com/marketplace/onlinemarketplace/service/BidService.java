@@ -1,3 +1,5 @@
+import java.util.Collections;
+import java.util.List;
 package com.marketplace.onlinemarketplace.service;
 
 
@@ -98,5 +100,11 @@ public class BidService {
         }
         return bid;
     }
-}
 
+
+    public List<Bid> getBidsById(Long id) {
+        List<Bid> bids = bidRepo.findById(id);
+        return bids != null ? bids : Collections.emptyList();
+    }
+
+}
