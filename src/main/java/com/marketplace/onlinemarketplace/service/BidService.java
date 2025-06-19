@@ -98,5 +98,15 @@ public class BidService {
         }
         return bid;
     }
-}
 
+    public List<Bid> getBidsBySpecificId(Long id) {
+        List<Bid> bids;
+        try {
+            bids = bidRepo.findByProjectId(id);
+        } catch (Exception e) {
+            throw new RuntimeException("Error occurred while fetching bids", e);
+        }
+        return bids != null ? bids : new ArrayList<>();
+    }
+
+}
