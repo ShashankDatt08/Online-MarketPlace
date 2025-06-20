@@ -98,5 +98,13 @@ public class BidService {
         }
         return bid;
     }
-}
 
+    public void deleteAllBids() {
+        bidRepo.deleteAll();
+    }
+
+    public void deleteBidById(Long bidId) {
+        bidRepo.deleteById(bidId);
+    }
+
+}
