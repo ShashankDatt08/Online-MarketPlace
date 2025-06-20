@@ -1,3 +1,12 @@
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.bind.annotation.*;
+import javax.validation.Valid;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+import java.util.Optional;
+import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 package com.marketplace.onlinemarketplace.service;
 
 
@@ -98,5 +107,72 @@ public class BidService {
         }
         return bid;
     }
-}
 
+
+
+    @RestController
+    @RequestMapping("/api")
+    public class RegistrationController {
+
+        private final UserRepository userRepository;
+        private final BCryptPasswordEncoder passwordEncoder;
+
+        public RegistrationController(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder) {
+            this.userRepository = userRepository;
+            this.passwordEncoder = passwordEncoder;
+        }
+
+        @PutMapping("/changepassword")
+        public ResponseEntity<?> changePassword(@Valid @RequestBody ChangePasswordRequest changePasswordRequest) {
+            User user = userRepository.findByUsername(changePasswordRequest.getUsername())
+                    .orElseThrow(() -> new UsernameNotFoundException("User not found with username: " + changePasswordRequest.getUsername()));
+
+            if (!passwordEncoder.matches(changePasswordRequest.getOldPassword(), user.getPassword())) {
+                throw new BadCredentialsException("Old password is incorrect");
+            }
+
+            user.setPassword(passwordEncoder.encode(changePasswordRequest.getNewPassword()));
+            userRepository.save(user);
+
+            return ResponseEntity.ok().build();
+        }
+
+        public static class ChangePasswordRequest {
+
+            @NotBlank
+            private String username;
+
+            @NotBlank
+            private String oldPassword;
+
+            @NotBlank
+            private String newPassword;
+
+        }
+    }
+
+
+
+    @Repository
+    public interface UserRepository extends JpaRepository<User, Long> {
+        Optional<User> findByUsername(String username);
+    }
+
+
+    @Entity
+    @Table(name = "users")
+    public class User {
+
+        @Id
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
+        private Long id;
+
+        @NotBlank
+        private String username;
+
+        @NotBlank
+        private String password;
+
+    }
+
+}
