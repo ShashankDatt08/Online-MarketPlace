@@ -1,3 +1,9 @@
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import java.util.Collections;
+import java.util.List;
 package com.marketplace.onlinemarketplace.service;
 
 
@@ -98,5 +104,30 @@ public class BidService {
         }
         return bid;
     }
-}
 
+
+
+    @Service
+    public class BidService {
+
+        private static final Logger logger = LoggerFactory.getLogger(BidService.class);
+
+        @Autowired
+        private BidRepository bidRepository;
+
+        public List<Bid> getBidsById(String id) {
+            try {
+                List<Bid> bids = bidRepository.findByUserId(id);
+                if (bids.isEmpty()) {
+                    logger.info("No bids found for the user with id: {}", id);
+                    return Collections.emptyList();
+                }
+                return bids;
+            } catch (Exception e) {
+                logger.error("An error occurred while retrieving bids for the user with id: {}", id, e);
+                return Collections.emptyList();
+            }
+        }
+    }
+
+}
