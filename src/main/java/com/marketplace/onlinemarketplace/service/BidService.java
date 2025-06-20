@@ -1,3 +1,7 @@
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import javax.validation.Valid;
 package com.marketplace.onlinemarketplace.service;
 
 
@@ -98,5 +102,41 @@ public class BidService {
         }
         return bid;
     }
-}
 
+
+    @RestController
+    @RequestMapping("/api")
+    public class RegistrationController {
+
+        private final UserRepository userRepository;
+        private final BCryptPasswordEncoder passwordEncoder;
+
+        public RegistrationController(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder) {
+            this.userRepository = userRepository;
+            this.passwordEncoder = passwordEncoder;
+        }
+
+        @PostMapping("/changepassword")
+        public ResponseEntity<?> changePassword(@Valid @RequestBody ChangePasswordRequest changePasswordRequest) {
+            User user = userRepository.findByUsername(changePasswordRequest.getUsername())
+                    .orElseThrow(() -> new UsernameNotFoundException("User not found with username: " + changePasswordRequest.getUsername()));
+
+            if (!passwordEncoder.matches(changePasswordRequest.getOldPassword(), user.getPassword())) {
+                return ResponseEntity.badRequest().body("Old password is incorrect");
+            }
+
+            user.setPassword(passwordEncoder.encode(changePasswordRequest.getNewPassword()));
+            userRepository.save(user);
+
+            return ResponseEntity.ok("Password changed successfully");
+        }
+
+        public static class ChangePasswordRequest {
+            private String username;
+            private String oldPassword;
+            private String newPassword;
+
+        }
+    }
+
+}
