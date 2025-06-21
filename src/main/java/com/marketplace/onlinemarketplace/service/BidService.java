@@ -1,3 +1,12 @@
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 package com.marketplace.onlinemarketplace.service;
 
 
@@ -98,5 +107,62 @@ public class BidService {
         }
         return bid;
     }
-}
 
+
+    @RestController
+    @RequestMapping("/api")
+    public class RegistrationController {
+
+        private final UserService userService;
+
+        public RegistrationController(UserService userService) {
+            this.userService = userService;
+        }
+
+        @PutMapping("/changepassword")
+        public ResponseEntity<?> changePassword(@Valid @RequestBody ChangePasswordRequest changePasswordRequest) {
+            userService.changePassword(changePasswordRequest);
+            return ResponseEntity.ok().build();
+        }
+    }
+
+
+    public class ChangePasswordRequest {
+
+        @NotBlank
+        private String username;
+
+        @NotBlank
+        private String oldPassword;
+
+        @NotBlank
+        private String newPassword;
+
+    }
+
+
+    @Service
+    public class UserService {
+
+        private final UserRepository userRepository;
+        private final PasswordEncoder passwordEncoder;
+
+        public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+            this.userRepository = userRepository;
+            this.passwordEncoder = passwordEncoder;
+        }
+
+        public void changePassword(ChangePasswordRequest changePasswordRequest) {
+            User user = userRepository.findByUsername(changePasswordRequest.getUsername())
+                    .orElseThrow(() -> new UsernameNotFoundException("User not found with username: " + changePasswordRequest.getUsername()));
+
+            if (!passwordEncoder.matches(changePasswordRequest.getOldPassword(), user.getPassword())) {
+                throw new BadCredentialsException("Old password is incorrect");
+            }
+
+            user.setPassword(passwordEncoder.encode(changePasswordRequest.getNewPassword()));
+            userRepository.save(user);
+        }
+    }
+
+}
