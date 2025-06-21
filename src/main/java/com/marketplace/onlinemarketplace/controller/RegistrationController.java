@@ -60,6 +60,21 @@ public class RegistrationController {
         }
         userService.logout(token);
         return ResponseEntity.ok("Logout successful.");
+
+    @PutMapping("/changepassword")
+    public ResponseEntity<String> changePassword(@RequestBody LoginRequest loginRequest, @RequestParam String newPassword) {
+        User user = userService.findByEmail(loginRequest.getEmail());
+        if (user == null || !bCryptPasswordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
+            return ResponseEntity.badRequest().body("Invalid email or password.");
+        }
+        try {
+            userService.changePassword(user, bCryptPasswordEncoder.encode(newPassword));
+            return ResponseEntity.ok("Password changed successfully.");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error occurred while changing password.");
+        }
+    }
+
     }
 
    
