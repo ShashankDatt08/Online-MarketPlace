@@ -98,5 +98,107 @@ public class BidService {
         }
         return bid;
     }
-}
 
+    using Microsoft.AspNetCore.Mvc;
+    using System.Threading.Tasks;
+
+    namespace YourNamespace.Controllers
+    {
+        [Route("api/[controller]")]
+        [ApiController]
+        public class RegistrationController : ControllerBase
+        {
+            private readonly IUserService _userService;
+
+            public RegistrationController(IUserService userService)
+            {
+                _userService = userService;
+            }
+
+
+            [HttpPost("changepassword")]
+            public async Task<IActionResult> ChangePassword(ChangePasswordModel model)
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+
+                var result = await _userService.ChangePasswordAsync(model);
+
+                if (!result.Succeeded)
+                {
+                    return BadRequest(result.Errors);
+                }
+
+                return Ok();
+            }
+        }
+    }
+    ```
+
+    ```csharp
+    using System.ComponentModel.DataAnnotations;
+
+    namespace YourNamespace.Models
+    {
+        public class ChangePasswordModel
+        {
+            [Required]
+            public string UserId { get; set; }
+
+            [Required]
+            [DataType(DataType.Password)]
+            public string OldPassword { get; set; }
+
+            [Required]
+            [DataType(DataType.Password)]
+            public string NewPassword { get; set; }
+        }
+    }
+    ```
+
+    ```csharp
+    using System.Threading.Tasks;
+    using YourNamespace.Models;
+    using Microsoft.AspNetCore.Identity;
+
+    namespace YourNamespace.Services
+    {
+        public interface IUserService
+        {
+            Task<IdentityResult> ChangePasswordAsync(ChangePasswordModel model);
+        }
+    }
+    ```
+
+    ```csharp
+    using System.Threading.Tasks;
+    using YourNamespace.Models;
+    using Microsoft.AspNetCore.Identity;
+
+    namespace YourNamespace.Services
+    {
+        public class UserService : IUserService
+        {
+            private readonly UserManager<IdentityUser> _userManager;
+
+            public UserService(UserManager<IdentityUser> userManager)
+            {
+                _userManager = userManager;
+            }
+
+            public async Task<IdentityResult> ChangePasswordAsync(ChangePasswordModel model)
+            {
+                var user = await _userManager.FindByIdAsync(model.UserId);
+                if (user == null)
+                {
+                    return IdentityResult.Failed(new IdentityError { Description = $"User with ID '{model.UserId}' not found." });
+                }
+
+                return await _userManager.ChangePasswordAsync(user, model.OldPassword, model.NewPassword);
+            }
+        }
+    }
+
+}
