@@ -98,5 +98,124 @@ public class BidService {
         }
         return bid;
     }
-}
 
+    using Microsoft.AspNetCore.Mvc;
+    using System.Threading.Tasks;
+
+    namespace YourNamespace.Controllers
+    {
+        [Route("api/[controller]")]
+        [ApiController]
+        public class RegistrationController : ControllerBase
+        {
+            private readonly IUserService _userService;
+
+            public RegistrationController(IUserService userService)
+            {
+                _userService = userService;
+            }
+
+
+            [HttpPost("changepassword")]
+            public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordModel model)
+            {
+                var result = await _userService.ChangePasswordAsync(model);
+
+                if (!result.Succeeded)
+                {
+                    return BadRequest(result.Errors);
+                }
+
+                return Ok();
+            }
+        }
+    }
+    ```
+
+    ```csharp
+    using System.Collections.Generic;
+    using System.Threading.Tasks;
+
+    namespace YourNamespace.Services
+    {
+        public interface IUserService
+        {
+
+            Task<ServiceResult> ChangePasswordAsync(ChangePasswordModel model);
+        }
+    }
+    ```
+
+    ```csharp
+    using System.Collections.Generic;
+    using System.Threading.Tasks;
+
+    namespace YourNamespace.Services
+    {
+        public class UserService : IUserService
+        {
+            private readonly UserManager<User> _userManager;
+
+            public UserService(UserManager<User> userManager)
+            {
+                _userManager = userManager;
+            }
+
+
+            public async Task<ServiceResult> ChangePasswordAsync(ChangePasswordModel model)
+            {
+                var user = await _userManager.FindByIdAsync(model.UserId);
+
+                if (user == null)
+                {
+                    return ServiceResult.Failure(new List<string> { "User not found" });
+                }
+
+                var result = await _userManager.ChangePasswordAsync(user, model.OldPassword, model.NewPassword);
+
+                if (!result.Succeeded)
+                {
+                    return ServiceResult.Failure(result.Errors.Select(e => e.Description).ToList());
+                }
+
+                return ServiceResult.Success();
+            }
+        }
+    }
+    ```
+
+    ```csharp
+    namespace YourNamespace.Models
+    {
+        public class ChangePasswordModel
+        {
+            public string UserId { get; set; }
+            public string OldPassword { get; set; }
+            public string NewPassword { get; set; }
+        }
+    }
+    ```
+
+    ```csharp
+    using System.Collections.Generic;
+
+    namespace YourNamespace.Services
+    {
+        public class ServiceResult
+        {
+            public bool Succeeded { get; set; }
+            public List<string> Errors { get; set; }
+
+            public static ServiceResult Success()
+            {
+                return new ServiceResult { Succeeded = true };
+            }
+
+            public static ServiceResult Failure(List<string> errors)
+            {
+                return new ServiceResult { Succeeded = false, Errors = errors };
+            }
+        }
+    }
+
+}
