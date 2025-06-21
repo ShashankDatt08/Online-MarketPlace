@@ -60,6 +60,18 @@ public class RegistrationController {
         }
         userService.logout(token);
         return ResponseEntity.ok("Logout successful.");
+
+    @PostMapping("/changepassword")
+    public ResponseEntity<String> changePassword(@RequestBody LoginRequest loginRequest) {
+        User user = userService.findByEmail(loginRequest.getEmail());
+        if (user == null) {
+            return ResponseEntity.badRequest().body("Email does not exist.");
+        }
+        String encodedPassword = bCryptPasswordEncoder.encode(loginRequest.getPassword());
+        userService.updatePassword(user, encodedPassword);
+        return ResponseEntity.ok("Password updated successfully.");
+    }
+
     }
 
    
