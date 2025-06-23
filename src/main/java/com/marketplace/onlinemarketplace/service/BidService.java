@@ -1,3 +1,4 @@
+import org.springframework.dao.EmptyResultDataAccessException;
 package com.marketplace.onlinemarketplace.service;
 
 
@@ -98,5 +99,45 @@ public class BidService {
         }
         return bid;
     }
-}
 
+
+    @Service
+    public class BidService {
+
+        @Autowired
+        private BidRepo bidRepo;
+
+        @Autowired
+        private ProjectService projectService;
+
+        @Autowired
+        private ProjectRepo projectRepo;
+
+        @Autowired
+        private UserRepo userRepo;
+
+        @Autowired
+        private ConversationRepo conversationRepo;
+
+        // Existing methods...
+
+        public void deleteAllBids() {
+            try {
+                bidRepo.deleteAll();
+            } catch (Exception e) {
+                throw new RuntimeException("Error occurred while deleting all bids", e);
+            }
+        }
+
+        public void deleteBidById(Long bidId) {
+            try {
+                bidRepo.deleteById(bidId);
+            } catch (EmptyResultDataAccessException e) {
+                throw new RuntimeException("Bid not found with id: " + bidId, e);
+            } catch (Exception e) {
+                throw new RuntimeException("Error occurred while deleting bid with id: " + bidId, e);
+            }
+        }
+    }
+
+}
