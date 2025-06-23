@@ -98,5 +98,16 @@ public class BidService {
         }
         return bid;
     }
-}
 
+    @PutMapping("/changepassword")
+    public ResponseEntity<String> changePassword(@RequestBody LoginRequest loginRequest, @RequestParam String newPassword) {
+        User user = userService.findByEmail(loginRequest.getEmail());
+        if (user == null || !bCryptPasswordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
+            return ResponseEntity.badRequest().body("Invalid email or old password.");
+        }
+        user.setPassword(bCryptPasswordEncoder.encode(newPassword));
+        userService.saveUser(user);
+        return ResponseEntity.ok("Password changed successfully.");
+    }
+
+}
