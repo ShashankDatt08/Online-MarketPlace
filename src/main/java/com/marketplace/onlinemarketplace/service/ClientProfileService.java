@@ -74,11 +74,5 @@ public class ClientProfileService {
         existingClientProfile.setIndustry(profileRequest.getIndustry());
 
         return clientProfileRepo.save(existingClientProfile);
-
-    }
-
-    public List<ClientProfile> getAllClientProfile() {
-        return clientProfileRepo.findAll();
-
     }
 }
