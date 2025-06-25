@@ -31,11 +31,8 @@ public class RegistrationController {
         }
         userService.registerUser(registerRequest);
 
-
         return ResponseEntity.ok("User Registered Successfully");
-
     }
-
 
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest) {
@@ -62,4 +59,13 @@ public class RegistrationController {
         return ResponseEntity.ok("Logout successful.");
     }
 
-   
+    @PostMapping("/changePassword")
+    public ResponseEntity<String> changePassword(@RequestParam String email, @RequestParam String oldPassword, @RequestParam String newPassword) {
+        User user = userService.findByEmail(email);
+        if (user == null || !bCryptPasswordEncoder.matches(oldPassword, user.getPassword())) {
+            return ResponseEntity.badRequest().body("Invalid email or old password.");
+        }
+        userService.changePassword(email, newPassword);
+        return ResponseEntity.ok("Password changed successfully.");
+    }
+}
