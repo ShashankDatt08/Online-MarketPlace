@@ -79,6 +79,9 @@ public class ClientProfileService {
 
     public List<ClientProfile> getAllClientProfile() {
         return clientProfileRepo.findAll();
+    }
 
+    public void deleteProfileById(Long clientId) {
+        clientProfileRepo.deleteById(clientId);
     }
 }
