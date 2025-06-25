@@ -1,3 +1,9 @@
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+import javax.transaction.Transactional;
 package com.marketplace.onlinemarketplace.service;
 
 
@@ -98,5 +104,38 @@ public class BidService {
         }
         return bid;
     }
-}
 
+
+
+    @Service
+    public class ClientProfileService {
+
+        private static final Logger logger = LoggerFactory.getLogger(ClientProfileService.class);
+
+        @Autowired
+        private ClientProfileRepository clientProfileRepository;
+
+        @Transactional
+        public void deleteClientProfile(String clientId) {
+            try {
+                if (StringUtils.isEmpty(clientId)) {
+                    throw new IllegalArgumentException("Client ID cannot be null or empty");
+                }
+
+                if (!clientProfileRepository.existsById(clientId)) {
+                    throw new IllegalArgumentException("Client with ID " + clientId + " does not exist");
+                }
+
+                clientProfileRepository.deleteById(clientId);
+                logger.info("Client profile with ID {} deleted successfully", clientId);
+            } catch (IllegalArgumentException e) {
+                logger.error("Invalid input: {}", e.getMessage());
+                throw e;
+            } catch (Exception e) {
+                logger.error("An error occurred while deleting client profile: {}", e.getMessage());
+                throw new RuntimeException("An error occurred while deleting client profile", e);
+            }
+        }
+    }
+
+}
