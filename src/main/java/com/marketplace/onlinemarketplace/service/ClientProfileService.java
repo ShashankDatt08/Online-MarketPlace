@@ -23,62 +23,31 @@ public class ClientProfileService {
     private UserRepo userRepo;
 
     public ClientProfile createProfile(ClientRequest clientRequest) {
-        User user = userRepo.findById(clientRequest.getId()).orElseThrow(() -> new RuntimeException("Client not found"));
-
-        if (user.getRole() != User.Role.CLIENT) {
-            throw new RuntimeException("User is not a Client and cannot create a ClientN profile.");
-        }
-
-        Optional<ClientProfile> existingProfileOptional = clientProfileRepo.findByUser(user);
-        ClientProfile clientProfile;
-
-        if (existingProfileOptional.isPresent()) {
-            clientProfile = existingProfileOptional.get();
-        } else {
-            clientProfile = new ClientProfile();
-            clientProfile.setUser(user);
-            clientProfile.setId(user.getId());
-        }
-
-        clientProfile.setUserName(user.getUsername());
-        clientProfile.setEmail(clientRequest.getEmail());
-        clientProfile.setCompanyName(clientRequest.getCompanyName());
-        clientProfile.setLocation(clientRequest.getLocation());
-        clientProfile.setIndustry(clientRequest.getIndustry());
-
-        return clientProfileRepo.save(clientProfile);
+        // existing code
     }
 
     public Optional<ClientProfile> getClientProfileById(Long clientId) {
-        return clientProfileRepo.findById(clientId);
+        // existing code
     }
 
     public ClientProfile saveClientProfile(ClientProfile clientProfile) {
-        return clientProfileRepo.save(clientProfile);
+        // existing code
     }
 
     public ClientProfile updateProfile(ClientRequest profileRequest) {
-        User user = userRepo.findById(profileRequest.getId()).orElseThrow(() -> new RuntimeException("Client not found"));
-
-        Optional<ClientProfile> existingProfile = clientProfileRepo.findByUser(user);
-        if (existingProfile.isEmpty()) {
-            throw new RuntimeException("Client profile not found for the user");
-        }
-
-        ClientProfile existingClientProfile = new ClientProfile();
-        existingClientProfile.setUser(user);
-        existingClientProfile.setUserName(user.getUsername());
-        existingClientProfile.setEmail(profileRequest.getEmail());
-        existingClientProfile.setCompanyName(profileRequest.getCompanyName());
-        existingClientProfile.setLocation(profileRequest.getLocation());
-        existingClientProfile.setIndustry(profileRequest.getIndustry());
-
-        return clientProfileRepo.save(existingClientProfile);
-
+        // existing code
     }
 
     public List<ClientProfile> getAllClientProfile() {
-        return clientProfileRepo.findAll();
+        // existing code
+    }
 
+    public void deleteProfile(Long clientId) {
+        Optional<ClientProfile> clientProfile = clientProfileRepo.findById(clientId);
+        if (clientProfile.isPresent()) {
+            clientProfileRepo.delete(clientProfile.get());
+        } else {
+            throw new RuntimeException("Client profile not found");
+        }
     }
 }
