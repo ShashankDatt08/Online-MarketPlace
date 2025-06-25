@@ -59,4 +59,18 @@ public class BidController {
             throw new RuntimeException(e.getMessage());
         }
     }
+
+    @PutMapping("/changePassword")
+    public ResponseEntity changePassword(@RequestBody ChangePasswordRequest changePasswordRequest) {
+        try {
+            boolean isPasswordChanged = registrationService.changePassword(changePasswordRequest);
+            if (isPasswordChanged) {
+                return ResponseEntity.ok("Password changed successfully");
+            } else {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed to change password");
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage());
+        }
+    }
 }
