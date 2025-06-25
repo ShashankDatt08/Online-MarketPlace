@@ -76,15 +76,6 @@ public class ClientProfileService {
         return clientProfileRepo.save(existingClientProfile);
 
     }
-    @Transactional
-    public void deleteProfile(Long id) {
-        ClientProfile profile = clientProfileRepo.findById(id).orElseThrow(() -> new RuntimeException("Client profile not found"));
-        try {
-            clientProfileRepo.delete(profile);
-        } catch (Exception e) {
-            System.out.println("Freelancer profile could not be deleted." + e.getMessage());
-        }
-    }
 
     public List<ClientProfile> getAllClientProfile() {
         return clientProfileRepo.findAll();
