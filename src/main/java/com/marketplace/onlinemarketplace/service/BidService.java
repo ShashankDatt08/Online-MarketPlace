@@ -1,3 +1,6 @@
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.stereotype.Service;
 package com.marketplace.onlinemarketplace.service;
 
 
@@ -98,5 +101,49 @@ public class BidService {
         }
         return bid;
     }
-}
 
+    // Assuming the RegistrationController class already exists
+
+
+    @RestController
+    @RequestMapping("/api")
+    public class RegistrationController {
+
+        // Existing APIs here...
+
+        @PutMapping("/changePassword")
+        public ResponseEntity<?> changePassword(@RequestBody ChangePasswordRequest changePasswordRequest) {
+            return registrationService.changePassword(changePasswordRequest);
+        }
+    }
+
+    // Assuming the RegistrationService class already exists
+
+
+    @Service
+    public class RegistrationService {
+
+        // Existing methods here...
+
+        public ResponseEntity<?> changePassword(ChangePasswordRequest changePasswordRequest) {
+            // Implement the logic to change the password
+        }
+    }
+
+    // Assuming the ChangePasswordRequest class does not exist
+
+    public class ChangePasswordRequest {
+
+        private String oldPassword;
+        private String newPassword;
+
+        // Getters and setters here...
+    }
+    ```
+
+    ```bash
+    # Assuming you are in the root directory of the project and git is initialized
+
+    git checkout -b feature/ai-123
+
+}
