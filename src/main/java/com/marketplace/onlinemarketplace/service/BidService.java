@@ -1,3 +1,6 @@
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import java.util.Optional;
 package com.marketplace.onlinemarketplace.service;
 
 
@@ -98,5 +101,36 @@ public class BidService {
         }
         return bid;
     }
-}
 
+    Assuming that the Client Profile service is a Spring Boot service, here is how you can remove the method that retrieves all client profiles:
+
+    ```java
+
+
+    @Service
+    public class ClientProfileService {
+
+        private final ClientProfileRepository clientProfileRepository;
+
+        @Autowired
+        public ClientProfileService(ClientProfileRepository clientProfileRepository) {
+            this.clientProfileRepository = clientProfileRepository;
+        }
+
+        public Optional<ClientProfile> getClientProfile(Long id) {
+            return clientProfileRepository.findById(id);
+        }
+
+        public ClientProfile saveClientProfile(ClientProfile clientProfile) {
+            return clientProfileRepository.save(clientProfile);
+        }
+
+        public void deleteClientProfile(Long id) {
+            clientProfileRepository.deleteById(id);
+        }
+    }
+    ```
+
+    In the above code, I have removed the method that retrieves all client profiles. The remaining methods allow for retrieving a single client profile by ID, saving a client profile, and deleting a client profile by ID. These methods should provide the necessary functionality for the service.
+
+}
