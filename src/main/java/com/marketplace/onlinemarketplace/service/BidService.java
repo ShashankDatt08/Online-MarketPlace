@@ -1,6 +1,5 @@
 package com.marketplace.onlinemarketplace.service;
 
-
 import com.marketplace.onlinemarketplace.entity.Bid;
 import com.marketplace.onlinemarketplace.entity.Conversation;
 import com.marketplace.onlinemarketplace.entity.Projects;
@@ -58,7 +57,6 @@ public class BidService {
 
     }
 
-
     public List<Bid> getBidById(Long projectId, boolean isClientViewing) {
         List<Bid> bids = bidRepo.findByProjectId(projectId);
 
@@ -98,5 +96,12 @@ public class BidService {
         }
         return bid;
     }
-}
 
+    public void deleteAllBids() {
+        bidRepo.deleteAll();
+    }
+
+    public void deleteBidById(Long bidId) {
+        bidRepo.deleteById(bidId);
+    }
+}
