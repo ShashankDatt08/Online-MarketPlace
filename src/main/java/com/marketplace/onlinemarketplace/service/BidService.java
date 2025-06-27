@@ -98,5 +98,27 @@ public class BidService {
         }
         return bid;
     }
-}
 
+    #!/bin/bash
+
+    # Check if branch name is provided
+    if [ -z "$1" ]
+    then
+        echo "Error: No branch name provided."
+        exit 1
+    fi
+
+    BRANCH_NAME=$1
+
+    # Check if branch already exists
+    if git rev-parse --verify $BRANCH_NAME >/dev/null 2>&1
+    then
+        echo "Error: Branch $BRANCH_NAME already exists."
+        exit 1
+    else
+        # Create new branch
+        git checkout -b $BRANCH_NAME
+        echo "Branch $BRANCH_NAME created."
+    fi
+
+}
