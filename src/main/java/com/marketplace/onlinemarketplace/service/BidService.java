@@ -1,42 +1,27 @@
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Iterator;
+package com.marketplace.onlinemarketplace.service;
+
+import com.marketplace.onlinemarketplace.model.Bid;
 import java.util.List;
+import java.util.stream.Collectors;
 
-class Bid {
-    private Date creationDate;
+public class BidService {
+    // Existing methods...
 
-    public Bid(Date creationDate) {
-        this.creationDate = creationDate;
+    /**
+     * Get all bids by ID.
+     * @param bidId the ID of the bid
+     * @return a list of bids with the given ID
+     */
+    public List<Bid> getAllBidsById(Long bidId) {
+        // Assuming there's a method getBids() that returns all bids
+        return getBids().stream()
+                .filter(bid -> bid.getId().equals(bidId))
+                .collect(Collectors.toList());
     }
 
-    public Date getCreationDate() {
-        return creationDate;
-    }
-}
-
-class BidService {
-    private List<Bid> bids;
-
-    public BidService() {
-        this.bids = new ArrayList<>();
-    }
-
-    public void addBid(Bid bid) {
-        bids.add(bid);
-    }
-
-    public void deleteBidsBeforeOrOnDate(Date date) {
-        Iterator<Bid> iterator = bids.iterator();
-        while (iterator.hasNext()) {
-            Bid bid = iterator.next();
-            if (!bid.getCreationDate().after(date)) {
-                iterator.remove();
-            }
-        }
-    }
-
-    public List<Bid> getBids() {
-        return bids;
+    // Placeholder for the existing getBids method
+    private List<Bid> getBids() {
+        // Implementation to retrieve all bids
+        return null;
     }
 }
