@@ -1,29 +1,24 @@
-import java.util.Date;
-import java.util.Iterator;
+package com.marketplace.onlinemarketplace.service;
+
+import com.marketplace.onlinemarketplace.model.Bid;
+import com.marketplace.onlinemarketplace.repository.BidRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import java.util.List;
 
+@Service
 public class BidService {
-    private List<Bid> bids;
 
-    public void deleteBidsByDate(Date date) {
-        Iterator<Bid> iterator = bids.iterator();
-        while (iterator.hasNext()) {
-            Bid bid = iterator.next();
-            if (bid.getDate().equals(date)) {
-                iterator.remove();
-            }
+    @Autowired
+    private BidRepository bidRepository;
+
+    public List<Bid> getAllBidsById(Long id) {
+        List<Bid> bids = bidRepository.findById(id);
+        if (bids.isEmpty()) {
+            // Handle the case where no bids are found
+            // This could be logging, throwing an exception, etc.
         }
-    }
-}
-
-class Bid {
-    private Date date;
-
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
+        return bids;
     }
 }
