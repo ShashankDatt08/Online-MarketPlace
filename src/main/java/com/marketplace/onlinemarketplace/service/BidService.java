@@ -5,11 +5,11 @@ import java.util.List;
 public class BidService {
     private List<Bid> bids;
 
-    public void deleteBidsOlderThan(Date date) {
+    public void deleteBidsByDate(Date date) {
         Iterator<Bid> iterator = bids.iterator();
         while (iterator.hasNext()) {
             Bid bid = iterator.next();
-            if (bid.getDate().before(date)) {
+            if (bid.getDate().equals(date)) {
                 iterator.remove();
             }
         }
