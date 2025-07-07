@@ -98,5 +98,10 @@ public class BidService {
         }
         return bid;
     }
+
+    public void deleteBidsBeforeDate(LocalDateTime date) {
+        List<Bid> bidsToDelete = bidRepo.findByBidDateBefore(date);
+        bidRepo.deleteAll(bidsToDelete);
+    }
 }
 
