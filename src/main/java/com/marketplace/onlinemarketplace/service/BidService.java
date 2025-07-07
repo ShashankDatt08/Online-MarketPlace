@@ -11,6 +11,7 @@ import com.marketplace.onlinemarketplace.repository.ProjectRepo;
 import com.marketplace.onlinemarketplace.repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -97,6 +98,17 @@ public class BidService {
 
         }
         return bid;
+    }
+
+    /**
+     * Deletes all bids that were created before the specified date.
+     *
+     * @param cutoffDate the date before which bids will be deleted
+     * @return the number of bids deleted
+     */
+    @Transactional
+    public long deleteBidsBeforeDate(LocalDateTime cutoffDate) {
+        return bidRepo.deleteByBidDateBefore(cutoffDate);
     }
 }
 
