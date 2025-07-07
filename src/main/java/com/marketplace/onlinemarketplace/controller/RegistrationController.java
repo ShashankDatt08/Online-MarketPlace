@@ -62,4 +62,18 @@ public class RegistrationController {
         return ResponseEntity.ok("Logout successful.");
     }
 
+    @PostMapping("/changePassword")
+    public ResponseEntity<String> changePassword(@RequestParam String email,
+                                                 @RequestParam String newPassword,
+                                                 @RequestParam String confirmPassword) {
+        if (userService.findByEmail(email) == null) {
+            return ResponseEntity.badRequest().body("Email address not found.");
+        }
+        if (!newPassword.equals(confirmPassword)) {
+            return ResponseEntity.badRequest().body("Passwords do not match.");
+        }
+        userService.changePassword(email, newPassword, confirmPassword);
+        return ResponseEntity.ok("Password changed successfully.");
+    }
+
    
