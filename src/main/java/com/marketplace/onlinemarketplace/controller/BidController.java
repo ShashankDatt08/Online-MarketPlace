@@ -8,6 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.time.LocalDateTime;
+import org.springframework.format.annotation.DateTimeFormat;
 
 @RestController
 @RequestMapping("/bid")
@@ -58,5 +60,12 @@ public class BidController {
         } catch (Exception e) {
             throw new RuntimeException(e.getMessage());
         }
+    }
+
+    @DeleteMapping("/deleteByDate")
+    public ResponseEntity deleteBidsBeforeDate(
+            @RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime date) {
+        long deletedCount = bidService.deleteBidsBeforeDate(date);
+        return ResponseEntity.ok("Deleted " + deletedCount + " bids before " + date);
     }
 }
