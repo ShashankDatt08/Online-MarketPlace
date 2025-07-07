@@ -98,5 +98,22 @@ public class BidService {
         }
         return bid;
     }
+
+    /**
+     * Retrieves all bids in the system.
+     * @return list of all bids
+     */
+    public List<Bid> getAllBids() {
+        return bidRepo.findAll();
+    }
+
+    /**
+     * Deletes bids submitted before the specified date.
+     * @param date the cutoff date; bids before this date will be deleted
+     * @return number of bids deleted
+     */
+    public long deleteBidsBefore(LocalDateTime date) {
+        return bidRepo.deleteByBidDateBefore(date);
+    }
 }
 
