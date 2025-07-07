@@ -6,6 +6,9 @@ import com.marketplace.onlinemarketplace.service.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import java.time.LocalDateTime;
 
 import java.util.List;
 
@@ -52,11 +55,21 @@ public class BidController {
 
     @GetMapping("/all")
     public ResponseEntity<List<Bid>> getAllBids() {
-        try{
+        try {
             List<Bid> bid = bidService.getAllBids();
             return ResponseEntity.ok(bid);
         } catch (Exception e) {
             throw new RuntimeException(e.getMessage());
+        }
+    }
+    @DeleteMapping("/deleteByDate")
+    public ResponseEntity<String> deleteBidsByDate(
+            @RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime date) {
+        try {
+            int deletedCount = bidService.deleteBidsBeforeDate(date);
+            return ResponseEntity.ok(deletedCount + " bids deleted successfully");
+        } catch (Exception e) {
+            return ResponseEntity.status(400).body("Error deleting bids: " + e.getMessage());
         }
     }
 }
