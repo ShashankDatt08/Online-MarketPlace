@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class BidService {
@@ -97,6 +98,12 @@ public class BidService {
 
         }
         return bid;
+    }
+
+    @Transactional
+    public void deleteBidByDate(LocalDateTime date) {
+        List<Bid> bids = bidRepo.findByBidDateBefore(date);
+        bidRepo.deleteAll(bids);
     }
 }
 
