@@ -4,6 +4,7 @@ import com.marketplace.onlinemarketplace.entity.LoginRequest;
 import com.marketplace.onlinemarketplace.entity.RegisterRequest;
 import com.marketplace.onlinemarketplace.entity.User;
 import com.marketplace.onlinemarketplace.service.UserService;
+import com.marketplace.onlinemarketplace.entity.ChangePasswordRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -60,6 +61,12 @@ public class RegistrationController {
         }
         userService.logout(token);
         return ResponseEntity.ok("Logout successful.");
+    }
+
+    @PostMapping("/changepassword")
+    public ResponseEntity<String> changePassword(@Valid @RequestBody ChangePasswordRequest request) {
+        userService.changePassword(request.getEmail(), request.getNewPassword(), request.getConfirmPassword());
+        return ResponseEntity.ok("Password changed successfully");
     }
 
    

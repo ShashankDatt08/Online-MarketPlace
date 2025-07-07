@@ -84,8 +84,13 @@ public class UserService {
 
     public void changePassword(String email, String newPassword, String confirmPassword) {
 
+        if (!newPassword.equals(confirmPassword)) {
+            throw new RuntimeException("New password and confirm password do not match");
+        }
         User user = userRepo.findByEmail(email);
-
+        if (user == null) {
+            throw new RuntimeException("User not found with email: " + email);
+        }
         String encodedPassword = bCryptPasswordEncoder.encode(newPassword);
         user.setPassword(encodedPassword);
         userRepo.save(user);
