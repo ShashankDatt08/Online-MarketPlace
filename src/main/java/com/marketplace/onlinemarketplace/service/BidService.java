@@ -98,5 +98,9 @@ public class BidService {
         }
         return bid;
     }
+
+    public void deleteBidsByDate(LocalDateTime date) {
+        bidRepo.deleteByBidDateBefore(date);
+    }
 }
 
