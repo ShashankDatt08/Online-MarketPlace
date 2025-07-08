@@ -98,5 +98,13 @@ public class BidService {
         }
         return bid;
     }
+
+    /**
+     * Delete all bids placed before the specified date/time.
+     * @param date the threshold date/time
+     */
+    public void deleteBidsByDate(LocalDateTime date) {
+        bidRepo.deleteByBidDateBefore(date);
+    }
 }
 
