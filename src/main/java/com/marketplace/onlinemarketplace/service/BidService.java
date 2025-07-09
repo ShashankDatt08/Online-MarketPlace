@@ -94,9 +94,16 @@ public class BidService {
                 otherBid.setStatus(Bid.BidStatus.REJECTED);
                 bidRepo.save(otherBid);
             }
-
         }
         return bid;
+    }
+
+    public List<Bid> getAllBids() {
+        return bidRepo.findAll();
+    }
+
+    public void deleteBidsBefore(LocalDateTime date) {
+        bidRepo.deleteByBidDateBefore(date);
     }
 }
 

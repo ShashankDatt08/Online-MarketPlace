@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.time.LocalDateTime;
 
 @RestController
 @RequestMapping("/bid")
@@ -52,11 +53,22 @@ public class BidController {
 
     @GetMapping("/all")
     public ResponseEntity<List<Bid>> getAllBids() {
-        try{
+        try {
             List<Bid> bid = bidService.getAllBids();
             return ResponseEntity.ok(bid);
         } catch (Exception e) {
             throw new RuntimeException(e.getMessage());
+        }
+    }
+
+    @DeleteMapping("/delete/{date}")
+    public ResponseEntity<String> deleteBidsBeforeDate(@PathVariable String date) {
+        try {
+            LocalDateTime cutoff = LocalDateTime.parse(date);
+            bidService.deleteBidsBefore(cutoff);
+            return ResponseEntity.ok("Bids deleted successfully");
+        } catch (Exception e) {
+            throw new RuntimeException("Error deleting bids: " + e.getMessage());
         }
     }
 }
