@@ -12,6 +12,7 @@ import com.marketplace.onlinemarketplace.repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -105,5 +106,12 @@ public class BidService {
     public void deleteBidsBefore(LocalDateTime date) {
         bidRepo.deleteByBidDateBefore(date);
     }
-}
 
+    /**
+     * Delete all bids whose bid date is before the given cutoff date.
+     * The time part is set to the start of the specified date.
+     */
+    public void deleteBidsBefore(LocalDate date) {
+        deleteBidsBefore(date.atStartOfDay());
+    }
+}
