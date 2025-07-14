@@ -9,6 +9,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
 
 @RestController
 @RequestMapping("/bid")
@@ -69,6 +72,23 @@ public class BidController {
             return ResponseEntity.ok("Bids deleted successfully");
         } catch (Exception e) {
             throw new RuntimeException("Error deleting bids: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Delete all bids made on the specified date (time component ignored).
+     *
+     * @param date the date for which bids should be deleted in ISO format (yyyy-MM-dd)
+     */
+    @DeleteMapping("/deleteByDate/{date}")
+    public ResponseEntity<String> deleteBidsByDate(@PathVariable String date) {
+        try {
+            LocalDate localDate = LocalDate.parse(date);
+            Date utilDate = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+            bidService.deleteBidsByDate(utilDate);
+            return ResponseEntity.ok("Bids deleted successfully for date: " + date);
+        } catch (Exception e) {
+            throw new RuntimeException("Error deleting bids by date: " + e.getMessage());
         }
     }
 }
