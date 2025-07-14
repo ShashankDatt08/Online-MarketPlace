@@ -12,6 +12,7 @@ import com.marketplace.onlinemarketplace.repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
@@ -108,9 +109,15 @@ public class BidService {
         bidRepo.deleteByBidDateBefore(date);
     }
 
+    /**
+     * Delete all bids made on the specified date (time component ignored).
+     *
+     * @param date the date for which bids should be deleted
+     */
     public void deleteBidsByDate(Date date) {
-        LocalDateTime cutoff = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
-        deleteBidsBefore(cutoff);
+        LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        LocalDateTime startOfDay = localDate.atStartOfDay();
+        LocalDateTime endOfDay = localDate.plusDays(1).atStartOfDay();
+        bidRepo.deleteByBidDateBetween(startOfDay, endOfDay);
     }
 }
-
