@@ -102,6 +102,10 @@ public class BidService {
         return bidRepo.findAll();
     }
 
+    public List<Bid> getAllBidsByFreelancerId(Long freelancerId) {
+        return bidRepo.findByFreelancerId(freelancerId);
+    }
+
     public void deleteBidsBefore(LocalDateTime date) {
         bidRepo.deleteByBidDateBefore(date);
     }
