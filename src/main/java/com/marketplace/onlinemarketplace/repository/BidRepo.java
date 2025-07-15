@@ -11,6 +11,5 @@ public interface BidRepo extends JpaRepository<Bid, Long> {
     List<Bid> findByProjectIdAndStatus(Long projectId, Bid.BidStatus status);
 
     void deleteByBidDateBefore(LocalDateTime date);
-
-
+    void deleteByBidDateBetween(LocalDateTime startDate, LocalDateTime endDate);
 }
