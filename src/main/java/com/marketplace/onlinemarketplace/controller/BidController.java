@@ -10,8 +10,15 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.time.LocalDateTime;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 @RestController
 @RequestMapping("/bid")
+@Tag(name = "Bid", description = "Bid management APIs")
 public class BidController {
 
     @Autowired
@@ -61,6 +68,11 @@ public class BidController {
         }
     }
 
+    @Operation(summary = "Delete bids before a specified date")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Bids deleted successfully", content = @Content(mediaType = "application/json")),
+        @ApiResponse(responseCode = "400", description = "Error deleting bids", content = @Content)
+    })
     @DeleteMapping("/delete/{date}")
     public ResponseEntity<String> deleteBidsBeforeDate(@PathVariable String date) {
         try {
@@ -68,7 +80,7 @@ public class BidController {
             bidService.deleteBidsBefore(cutoff);
             return ResponseEntity.ok("Bids deleted successfully");
         } catch (Exception e) {
-            throw new RuntimeException("Error deleting bids: " + e.getMessage());
+            return ResponseEntity.status(400).body("Error deleting bids: " + e.getMessage());
         }
     }
 }
