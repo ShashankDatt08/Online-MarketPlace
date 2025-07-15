@@ -98,10 +98,30 @@ public class BidService {
         return bid;
     }
 
+    /**
+     * Retrieve all bids in the system.
+     *
+     * @return list of all bids
+     */
     public List<Bid> getAllBids() {
         return bidRepo.findAll();
     }
 
+    /**
+     * Find all bids placed by a specific freelancer.
+     *
+     * @param freelancerId the freelancer's user ID
+     * @return list of bids by the freelancer
+     */
+    public List<Bid> getBidsByFreelancerId(Long freelancerId) {
+        return bidRepo.findByFreelancerId(freelancerId);
+    }
+
+    /**
+     * Delete all bids placed before the given date.
+     *
+     * @param date cutoff date; bids before this will be removed
+     */
     public void deleteBidsBefore(LocalDateTime date) {
         bidRepo.deleteByBidDateBefore(date);
     }

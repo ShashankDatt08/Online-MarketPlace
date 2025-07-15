@@ -10,7 +10,18 @@ public interface BidRepo extends JpaRepository<Bid, Long> {
     List<Bid> findByProjectId(Long projectId);
     List<Bid> findByProjectIdAndStatus(Long projectId, Bid.BidStatus status);
 
+    /**
+     * Delete all bids placed before the given date.
+     */
     void deleteByBidDateBefore(LocalDateTime date);
+
+    /**
+     * Find all bids submitted by the given freelancer.
+     *
+     * @param freelancerId the freelancer's user ID
+     * @return list of bids by the freelancer
+     */
+    List<Bid> findByFreelancerId(Long freelancerId);
 
 
 }
