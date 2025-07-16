@@ -72,6 +72,10 @@ public class BidService {
         return bids;
     }
 
+    public List<Bid> getBidByFreelancerId(Long freelancerId) {
+        return bidRepo.findByFreelancerId(freelancerId);
+    }
+
     public Bid acceptBid(Long bidId, Long clientId) {
         Bid bid = bidRepo.findById(bidId).orElseThrow(() -> new RuntimeException("Bid not found"));
         Projects projects = projectRepo.findById(bid.getProjectId()).orElseThrow(() -> new RuntimeException("Project not found"));
