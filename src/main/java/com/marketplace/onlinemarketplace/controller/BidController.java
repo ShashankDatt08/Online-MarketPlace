@@ -6,12 +6,18 @@ import com.marketplace.onlinemarketplace.service.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 import java.util.List;
 import java.time.LocalDateTime;
 
 @RestController
 @RequestMapping("/bid")
+@Tag(name = "Bid", description = "Bid management APIs")
 public class BidController {
 
     @Autowired
@@ -61,6 +67,11 @@ public class BidController {
         }
     }
 
+    @Operation(summary = "Delete bids before a specified date")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Bids deleted successfully", content = @Content(mediaType = "application/json")),
+            @ApiResponse(responseCode = "400", description = "Error deleting bids", content = @Content)
+    })
     @DeleteMapping("/delete/{date}")
     public ResponseEntity<String> deleteBidsBeforeDate(@PathVariable String date) {
         try {
