@@ -8,7 +8,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import org.springframework.format.annotation.DateTimeFormat;
 
 @RestController
 @RequestMapping("/bid")
@@ -61,10 +63,16 @@ public class BidController {
         }
     }
 
+    /**
+     * Deletes all bids placed before the specified date (at start of day).
+     * @param date the cutoff date (ISO format yyyy-MM-dd)
+     * @return confirmation message
+     */
     @DeleteMapping("/delete/{date}")
-    public ResponseEntity<String> deleteBidsBeforeDate(@PathVariable String date) {
+    public ResponseEntity<String> deleteBidsBeforeDate(
+            @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
         try {
-            LocalDateTime cutoff = LocalDateTime.parse(date);
+            LocalDateTime cutoff = date.atStartOfDay();
             bidService.deleteBidsBefore(cutoff);
             return ResponseEntity.ok("Bids deleted successfully");
         } catch (Exception e) {
