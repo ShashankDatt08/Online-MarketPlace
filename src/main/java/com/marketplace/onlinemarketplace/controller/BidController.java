@@ -3,15 +3,21 @@ package com.marketplace.onlinemarketplace.controller;
 import com.marketplace.onlinemarketplace.entity.Bid;
 import com.marketplace.onlinemarketplace.service.BidService;
 import com.marketplace.onlinemarketplace.service.ProjectService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @RestController
 @RequestMapping("/bid")
+@Tag(name = "Bid", description = "Bid management APIs")
 public class BidController {
 
     @Autowired
@@ -61,6 +67,11 @@ public class BidController {
         }
     }
 
+    @Operation(summary = "Delete bids before specified date")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Bids deleted successfully", content = @Content(mediaType = "application/json")),
+        @ApiResponse(responseCode = "400", description = "Error deleting bids", content = @Content)
+    })
     @DeleteMapping("/delete/{date}")
     public ResponseEntity<String> deleteBidsBeforeDate(@PathVariable String date) {
         try {
@@ -68,7 +79,7 @@ public class BidController {
             bidService.deleteBidsBefore(cutoff);
             return ResponseEntity.ok("Bids deleted successfully");
         } catch (Exception e) {
-            throw new RuntimeException("Error deleting bids: " + e.getMessage());
+            return ResponseEntity.status(400).body("Error deleting bids: " + e.getMessage());
         }
     }
 }
