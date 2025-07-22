@@ -1,6 +1,7 @@
 package com.marketplace.onlinemarketplace.controller;
 
 import com.marketplace.onlinemarketplace.entity.Bid;
+import com.marketplace.onlinemarketplace.entity.Bid.BidStatus;
 import com.marketplace.onlinemarketplace.service.BidService;
 import com.marketplace.onlinemarketplace.service.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,6 +70,18 @@ public class BidController {
             return ResponseEntity.ok("Bids deleted successfully");
         } catch (Exception e) {
             throw new RuntimeException("Error deleting bids: " + e.getMessage());
+        }
+    }
+    
+    @PutMapping("/update/{date}/{status}")
+    public ResponseEntity<String> updateBidsBeforeDate(@PathVariable String date,
+                                                       @PathVariable BidStatus status) {
+        try {
+            LocalDateTime cutoff = LocalDateTime.parse(date);
+            bidService.updateBidsBefore(cutoff, status);
+            return ResponseEntity.ok("Bids updated successfully");
+        } catch (Exception e) {
+            throw new RuntimeException("Error updating bids: " + e.getMessage());
         }
     }
 }

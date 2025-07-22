@@ -105,5 +105,15 @@ public class BidService {
     public void deleteBidsBefore(LocalDateTime date) {
         bidRepo.deleteByBidDateBefore(date);
     }
-}
 
+    /**
+     * Update status of all bids placed before the specified date.
+     * @param date cutoff date
+     * @param status new status to set on matching bids
+     */
+    public void updateBidsBefore(LocalDateTime date, Bid.BidStatus status) {
+        List<Bid> bids = bidRepo.findByBidDateBefore(date);
+        bids.forEach(bid -> bid.setStatus(status));
+        bidRepo.saveAll(bids);
+    }
+}
