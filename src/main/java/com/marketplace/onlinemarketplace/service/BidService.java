@@ -102,8 +102,23 @@ public class BidService {
         return bidRepo.findAll();
     }
 
+    /**
+     * Delete all bids before the given date.
+     * @param date cutoff date (exclusive)
+     */
     public void deleteBidsBefore(LocalDateTime date) {
         bidRepo.deleteByBidDateBefore(date);
     }
-}
 
+    /**
+     * Update all pending bids before the given date to REJECTED status.
+     * @param date cutoff date (exclusive)
+     */
+    public void updateBidsBefore(LocalDateTime date) {
+        List<Bid> bids = bidRepo.findByBidDateBeforeAndStatus(date, Bid.BidStatus.PENDING);
+        for (Bid bid : bids) {
+            bid.setStatus(Bid.BidStatus.REJECTED);
+        }
+        bidRepo.saveAll(bids);
+    }
+}
