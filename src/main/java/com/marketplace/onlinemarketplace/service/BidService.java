@@ -102,8 +102,17 @@ public class BidService {
         return bidRepo.findAll();
     }
 
+    /**
+     * Retrieves all bids placed by the specified freelancer.
+     *
+     * @param freelancerId the identifier of the freelancer
+     * @return list of bids associated with the freelancer
+     */
+    public List<Bid> getBidsByFreelancerId(Long freelancerId) {
+        return bidRepo.findByFreelancerId(freelancerId);
+    }
+
     public void deleteBidsBefore(LocalDateTime date) {
         bidRepo.deleteByBidDateBefore(date);
     }
 }
-
