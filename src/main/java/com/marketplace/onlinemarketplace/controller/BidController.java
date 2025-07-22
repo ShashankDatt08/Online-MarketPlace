@@ -71,4 +71,22 @@ public class BidController {
             throw new RuntimeException("Error deleting bids: " + e.getMessage());
         }
     }
+
+    /**
+     * Update status of bids made before the specified date.
+     * @param date cutoff date in ISO format
+     * @param status target status for bids
+     * @return confirmation message with count of updated bids
+     */
+    @PutMapping("/update/{date}/{status}")
+    public ResponseEntity<String> updateBidsBeforeDate(@PathVariable String date,
+                                                       @PathVariable Bid.BidStatus status) {
+        try {
+            LocalDateTime cutoff = LocalDateTime.parse(date);
+            int updated = bidService.updateBidsStatusBefore(cutoff, status);
+            return ResponseEntity.ok(updated + " bids updated successfully");
+        } catch (Exception e) {
+            throw new RuntimeException("Error updating bids: " + e.getMessage());
+        }
+    }
 }
