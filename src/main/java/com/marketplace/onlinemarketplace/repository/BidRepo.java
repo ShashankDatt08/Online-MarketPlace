@@ -12,5 +12,10 @@ public interface BidRepo extends JpaRepository<Bid, Long> {
 
     void deleteByBidDateBefore(LocalDateTime date);
 
+    /**
+     * Find all bids with a bidDate before the given cutoff.
+     */
+    List<Bid> findByBidDateBefore(LocalDateTime date);
+
 
 }
