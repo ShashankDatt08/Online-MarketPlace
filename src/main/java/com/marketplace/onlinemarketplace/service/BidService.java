@@ -105,5 +105,18 @@ public class BidService {
     public void deleteBidsBefore(LocalDateTime date) {
         bidRepo.deleteByBidDateBefore(date);
     }
-}
 
+    /**
+     * Update all pending bids with a bidDate before the given cutoff to REJECTED status.
+     * @param date cutoff LocalDateTime threshold
+     */
+    public void updateBidsBefore(LocalDateTime date) {
+        List<Bid> staleBids = bidRepo.findByBidDateBefore(date);
+        for (Bid bid : staleBids) {
+            if (bid.getStatus() == Bid.BidStatus.PENDING) {
+                bid.setStatus(Bid.BidStatus.REJECTED);
+                bidRepo.save(bid);
+            }
+        }
+    }
+}
