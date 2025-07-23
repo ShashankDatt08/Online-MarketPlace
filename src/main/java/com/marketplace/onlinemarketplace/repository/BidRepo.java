@@ -12,5 +12,13 @@ public interface BidRepo extends JpaRepository<Bid, Long> {
 
     void deleteByBidDateBefore(LocalDateTime date);
 
+    /**
+     * Retrieves all bids placed by the given freelancer.
+     *
+     * @param freelancerId the freelancer's user ID
+     * @return list of bids by the freelancer
+     */
+    List<Bid> findByFreelancerId(Long freelancerId);
+
 
 }

@@ -105,5 +105,14 @@ public class BidService {
     public void deleteBidsBefore(LocalDateTime date) {
         bidRepo.deleteByBidDateBefore(date);
     }
-}
 
+    /**
+     * Returns all bids placed by the specified freelancer.
+     *
+     * @param freelancerId the ID of the freelancer
+     * @return list of bids made by the freelancer
+     */
+    public List<Bid> getBidsByFreelancerId(Long freelancerId) {
+        return bidRepo.findByFreelancerId(freelancerId);
+    }
+}
