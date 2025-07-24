@@ -105,9 +105,8 @@ public class MessageService {
                 .findFirst()
                 .orElseThrow(() -> new RuntimeException("No accepted bid for this project"));
 
-
-        if(!userId.equals(projects.getClientId()) && !userId.equals(bid.getFreelancerId())) {
-            throw  new RuntimeException("User is not part of this project");
+        if (!userId.equals(projects.getClientId()) && !userId.equals(bid.getFreelancerId())) {
+            throw new RuntimeException("User is not part of this project");
         }
 
         Optional<Conversation> conversation = conversationRepo.findByUserId1AndUserId2AndProjectId(
@@ -116,11 +115,19 @@ public class MessageService {
                 projectId
         );
 
-
         if (conversation.isEmpty()) {
             throw new RuntimeException("Conversation not found.");
         }
 
         return messageRepo.findByConversationIdOrderByTimestampAsc(conversation.get().getId());
+    }
+
+    /**
+     * Deletes all messages with timestamp before the given date.
+     *
+     * @param date cutoff date; messages before this timestamp will be removed
+     */
+    public void deleteMessagesBefore(LocalDateTime date) {
+        messageRepo.deleteByTimestampBefore(date);
     }
 }

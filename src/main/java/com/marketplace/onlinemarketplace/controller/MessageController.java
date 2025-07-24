@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.time.LocalDateTime;
 
 @RestController
 @RequestMapping("/message")
@@ -28,5 +29,16 @@ public class MessageController {
     public ResponseEntity getConversations(@RequestParam Long projectId , @RequestParam Long userId) {
         List<Message> message = messageService.getConversationById(projectId , userId);
         return ResponseEntity.ok(message);
+    }
+
+    @DeleteMapping("/delete/{date}")
+    public ResponseEntity<String> deleteMessagesBeforeDate(@PathVariable String date) {
+        try {
+            LocalDateTime cutoff = LocalDateTime.parse(date);
+            messageService.deleteMessagesBefore(cutoff);
+            return ResponseEntity.ok("Messages deleted successfully");
+        } catch (Exception e) {
+            throw new RuntimeException("Error deleting messages: " + e.getMessage());
+        }
     }
 }
