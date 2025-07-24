@@ -118,4 +118,13 @@ public class ProjectService {
         bid.setStatus(Bid.BidStatus.ACCEPTED);
         return bidRepo.save(bid);
     }
+
+    /**
+     * Deletes all projects created before the specified date.
+     *
+     * @param date the cutoff creation date
+     */
+    public void deleteProjectsBefore(LocalDateTime date) {
+        projectRepo.deleteByCreatedAtBefore(date);
+    }
 }
