@@ -123,4 +123,14 @@ public class MessageService {
 
         return messageRepo.findByConversationIdOrderByTimestampAsc(conversation.get().getId());
     }
+
+    /**
+     * Deletes all messages with a timestamp before the specified date-time.
+     *
+     * @param timestamp the cutoff date-time; messages older than this will be deleted
+     * @return the number of messages deleted
+     */
+    public long deleteMessagesBefore(java.time.LocalDateTime timestamp) {
+        return messageRepo.deleteByTimestampBefore(timestamp);
+    }
 }
