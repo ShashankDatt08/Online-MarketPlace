@@ -5,7 +5,9 @@ import com.marketplace.onlinemarketplace.service.MessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.format.annotation.DateTimeFormat;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -28,5 +30,18 @@ public class MessageController {
     public ResponseEntity getConversations(@RequestParam Long projectId , @RequestParam Long userId) {
         List<Message> message = messageService.getConversationById(projectId , userId);
         return ResponseEntity.ok(message);
+    }
+
+    /**
+     * Deletes all messages with a timestamp before the specified date.
+     *
+     * @param date the cutoff date in ISO date-time format
+     * @return ResponseEntity containing the number of deleted messages
+     */
+    @DeleteMapping("/delete")
+    public ResponseEntity<Long> deleteMessagesBefore(
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime date) {
+        long deletedCount = messageService.deleteMessagesBefore(date);
+        return ResponseEntity.ok(deletedCount);
     }
 }
