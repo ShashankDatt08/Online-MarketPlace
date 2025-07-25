@@ -123,4 +123,8 @@ public class MessageService {
 
         return messageRepo.findByConversationIdOrderByTimestampAsc(conversation.get().getId());
     }
+
+    public long deleteMessagesBeforeDate(LocalDateTime date) {
+        return messageRepo.deleteByTimestampBefore(date);
+    }
 }
