@@ -71,4 +71,15 @@ public class BidController {
             throw new RuntimeException("Error deleting bids: " + e.getMessage());
         }
     }
+
+    @PutMapping("/update/{date}")
+    public ResponseEntity<String> updateBidsBeforeDate(@PathVariable String date) {
+        try {
+            LocalDateTime cutoff = LocalDateTime.parse(date);
+            int updatedCount = bidService.updateBidsBefore(cutoff);
+            return ResponseEntity.ok(updatedCount + " bids updated successfully");
+        } catch (Exception e) {
+            throw new RuntimeException("Error updating bids: " + e.getMessage());
+        }
+    }
 }
