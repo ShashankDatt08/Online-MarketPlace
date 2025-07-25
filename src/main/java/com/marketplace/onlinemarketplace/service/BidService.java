@@ -105,5 +105,22 @@ public class BidService {
     public void deleteBidsBefore(LocalDateTime date) {
         bidRepo.deleteByBidDateBefore(date);
     }
-}
 
+    /**
+     * Update status of all pending bids older than the given date to REJECTED.
+     *
+     * @param date cutoff date
+     * @return number of bids updated
+     */
+    public int updateBidsBefore(LocalDateTime date) {
+        List<Bid> outdatedBids = bidRepo.findByBidDateBeforeAndStatus(date, Bid.BidStatus.PENDING);
+        if (outdatedBids.isEmpty()) {
+            return 0;
+        }
+        for (Bid bid : outdatedBids) {
+            bid.setStatus(Bid.BidStatus.REJECTED);
+        }
+        bidRepo.saveAll(outdatedBids);
+        return outdatedBids.size();
+    }
+}
