@@ -6,7 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import org.springframework.format.annotation.DateTimeFormat;
 
 @RestController
 @RequestMapping("/message")
@@ -28,5 +30,12 @@ public class MessageController {
     public ResponseEntity getConversations(@RequestParam Long projectId , @RequestParam Long userId) {
         List<Message> message = messageService.getConversationById(projectId , userId);
         return ResponseEntity.ok(message);
+    }
+
+    @DeleteMapping("/deleteByDate")
+    public ResponseEntity<String> deleteMessagesByDate(
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime beforeDate) {
+        long deletedCount = messageService.deleteMessagesBeforeDate(beforeDate);
+        return ResponseEntity.ok(String.format("Deleted %d messages before %s", deletedCount, beforeDate));
     }
 }
