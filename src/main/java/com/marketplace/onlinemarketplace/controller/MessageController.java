@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.time.LocalDateTime;
 
 @RestController
 @RequestMapping("/message")
@@ -28,5 +29,18 @@ public class MessageController {
     public ResponseEntity getConversations(@RequestParam Long projectId , @RequestParam Long userId) {
         List<Message> message = messageService.getConversationById(projectId , userId);
         return ResponseEntity.ok(message);
+    }
+
+    /**
+     * Deletes messages older than the specified date.
+     *
+     * @param date ISO-8601 date-time string; messages before this date will be deleted
+     * @return empty response on success
+     */
+    @DeleteMapping("/delete")
+    public ResponseEntity<Void> deleteMessagesBefore(@RequestParam String date) {
+        LocalDateTime beforeDate = LocalDateTime.parse(date);
+        messageService.deleteMessagesBefore(beforeDate);
+        return ResponseEntity.ok().build();
     }
 }
