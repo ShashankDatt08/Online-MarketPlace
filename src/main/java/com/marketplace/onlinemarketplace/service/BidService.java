@@ -15,6 +15,8 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.Date;
+import java.time.ZoneId;
 
 @Service
 public class BidService {
@@ -105,5 +107,15 @@ public class BidService {
     public void deleteBidsBefore(LocalDateTime date) {
         bidRepo.deleteByBidDateBefore(date);
     }
-}
 
+    /**
+     * Deletes all bids before or on the given date.
+     *
+     * @param date the cutoff date; bids with bidDate before this date will be removed
+     */
+    public void deleteBidsByDate(Date date) {
+        ZoneId zone = ZoneId.systemDefault();
+        LocalDateTime cutoff = date.toInstant().atZone(zone).toLocalDateTime();
+        deleteBidsBefore(cutoff);
+    }
+}
