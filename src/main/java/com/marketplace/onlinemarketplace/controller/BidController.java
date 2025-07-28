@@ -61,6 +61,13 @@ public class BidController {
         }
     }
 
+    /**
+     * Delete all bids placed before the given ISO-8601 date-time string.
+     * Example: DELETE /bid/delete/2023-07-13T15:30:00
+     *
+     * @param date ISO-8601 formatted cutoff date-time
+     * @return confirmation message on successful deletion
+     */
     @DeleteMapping("/delete/{date}")
     public ResponseEntity<String> deleteBidsBeforeDate(@PathVariable String date) {
         try {

@@ -102,8 +102,12 @@ public class BidService {
         return bidRepo.findAll();
     }
 
+    /**
+     * Delete all bids placed before the specified date/time.
+     *
+     * @param date cutoff LocalDateTime; bids earlier than this will be removed
+     */
     public void deleteBidsBefore(LocalDateTime date) {
         bidRepo.deleteByBidDateBefore(date);
     }
 }
-
