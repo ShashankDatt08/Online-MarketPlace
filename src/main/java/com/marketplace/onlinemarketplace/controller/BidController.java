@@ -9,9 +9,15 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.time.LocalDateTime;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
 @RequestMapping("/bid")
+@Tag(name = "Bid", description = "Bid management APIs")
 public class BidController {
 
     @Autowired
@@ -69,6 +75,28 @@ public class BidController {
             return ResponseEntity.ok("Bids deleted successfully");
         } catch (Exception e) {
             throw new RuntimeException("Error deleting bids: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Reject all pending bids placed before the given date.
+     *
+     * @param date string representation of cutoff date/time (ISO_LOCAL_DATE_TIME)
+     * @return response message with number of bids updated
+     */
+    @Operation(summary = "Reject pending bids before a specific date")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Bids updated successfully", content = @Content(mediaType = "application/json")),
+        @ApiResponse(responseCode = "400", description = "Error updating bids", content = @Content)
+    })
+    @PutMapping("/update/{date}")
+    public ResponseEntity<String> updateBidsBeforeDate(@PathVariable String date) {
+        try {
+            LocalDateTime cutoff = LocalDateTime.parse(date);
+            int updated = bidService.updateBidsBefore(cutoff);
+            return ResponseEntity.ok(updated + " bids rejected successfully");
+        } catch (Exception e) {
+            return ResponseEntity.status(400).body("Error updating bids: " + e.getMessage());
         }
     }
 }
