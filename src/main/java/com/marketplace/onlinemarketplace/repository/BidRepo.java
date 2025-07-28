@@ -11,6 +11,10 @@ public interface BidRepo extends JpaRepository<Bid, Long> {
     List<Bid> findByProjectIdAndStatus(Long projectId, Bid.BidStatus status);
 
     void deleteByBidDateBefore(LocalDateTime date);
+    /**
+     * Update status of all pending bids with bidDate before the given cutoff date to REJECTED.
+     */
+    List<Bid> findByBidDateBeforeAndStatus(LocalDateTime date, Bid.BidStatus status);
 
 
 }
