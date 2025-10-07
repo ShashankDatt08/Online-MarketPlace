@@ -71,4 +71,18 @@ public class BidController {
             throw new RuntimeException("Error deleting bids: " + e.getMessage());
         }
     }
+
+    @PutMapping("/update/{date}/{status}")
+    public ResponseEntity<List<Bid>> updateBidsBeforeDate(@PathVariable String date, @PathVariable String status) {
+        try {
+            LocalDateTime cutoff = LocalDateTime.parse(date);
+            Bid.BidStatus bidStatus = Bid.BidStatus.valueOf(status.toUpperCase());
+            List<Bid> updatedBids = bidService.updateBidsBefore(cutoff, bidStatus);
+            return ResponseEntity.ok(updatedBids);
+        } catch (IllegalArgumentException e) {
+            throw new RuntimeException("Invalid status value: " + status);
+        } catch (Exception e) {
+            throw new RuntimeException("Error updating bids: " + e.getMessage());
+        }
+    }
 }
