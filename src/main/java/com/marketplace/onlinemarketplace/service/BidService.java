@@ -11,6 +11,7 @@ import com.marketplace.onlinemarketplace.repository.ProjectRepo;
 import com.marketplace.onlinemarketplace.repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -105,5 +106,17 @@ public class BidService {
     public void deleteBidsBefore(LocalDateTime date) {
         bidRepo.deleteByBidDateBefore(date);
     }
-}
 
+    @Transactional
+    public List<Bid> updateBidsBefore(LocalDateTime date, Bid.BidStatus status) {
+        List<Bid> bidsToUpdate = bidRepo.findByBidDateBefore(date);
+
+        if (bidsToUpdate.isEmpty()) {
+            return bidsToUpdate;
+        }
+
+        bidsToUpdate.forEach(bid -> bid.setStatus(status));
+
+        return bidRepo.saveAll(bidsToUpdate);
+    }
+}
