@@ -1,0 +1,778 @@
+{
+  "data": {
+    "pairs": [
+      {
+        "request": {
+          "path": {
+            "exactMatch": "/auth/register"
+          },
+          "method": {
+            "exactMatch": "POST"
+          },
+          "body": {
+            "jsonMatch": {
+              "username": "client_acme",
+              "email": "client@acme.io",
+              "password": "Secret123!",
+              "role": "CLIENT",
+              "firstname": "Alice",
+              "lastname": "Wonders"
+            }
+          },
+          "headers": {
+            "Content-Type": [
+              "application/json"
+            ]
+          }
+        },
+        "response": {
+          "status": 200,
+          "body": "User Registered Successfully",
+          "encodedBody": false,
+          "headers": {
+            "Content-Type": [
+              "text/plain; charset=utf-8"
+            ]
+          }
+        }
+      },
+      {
+        "request": {
+          "path": {
+            "exactMatch": "/auth/register"
+          },
+          "method": {
+            "exactMatch": "POST"
+          },
+          "body": {
+            "jsonMatch": {
+              "username": "freelancer_nova",
+              "email": "nova@talenthub.dev",
+              "password": "BuildFast!23",
+              "role": "FREELANCER",
+              "firstname": "Noah",
+              "lastname": "Vector"
+            }
+          },
+          "headers": {
+            "Content-Type": [
+              "application/json"
+            ]
+          }
+        },
+        "response": {
+          "status": 200,
+          "body": "User Registered Successfully",
+          "encodedBody": false,
+          "headers": {
+            "Content-Type": [
+              "text/plain; charset=utf-8"
+            ]
+          }
+        }
+      },
+      {
+        "request": {
+          "path": {
+            "exactMatch": "/auth/login"
+          },
+          "method": {
+            "exactMatch": "POST"
+          },
+          "body": {
+            "jsonMatch": {
+              "email": "client@acme.io",
+              "password": "Secret123!"
+            }
+          },
+          "headers": {
+            "Content-Type": [
+              "application/json"
+            ]
+          }
+        },
+        "response": {
+          "status": 200,
+          "body": "Login Successful. Token: mock-jwt-token-123",
+          "encodedBody": false,
+          "headers": {
+            "Content-Type": [
+              "text/plain; charset=utf-8"
+            ]
+          }
+        }
+      },
+      {
+        "request": {
+          "path": {
+            "exactMatch": "/auth/all"
+          },
+          "method": {
+            "exactMatch": "GET"
+          }
+        },
+        "response": {
+          "status": 200,
+          "body": "[{\"id\":101,\"username\":\"client_acme\",\"email\":\"client@acme.io\",\"firstname\":\"Alice\",\"lastname\":\"Wonders\",\"role\":\"CLIENT\"},{\"id\":202,\"username\":\"freelancer_nova\",\"email\":\"nova@talenthub.dev\",\"firstname\":\"Noah\",\"lastname\":\"Vector\",\"role\":\"FREELANCER\"}]",
+          "encodedBody": false,
+          "headers": {
+            "Content-Type": [
+              "application/json"
+            ]
+          }
+        }
+      },
+      {
+        "request": {
+          "path": {
+            "exactMatch": "/auth/logout"
+          },
+          "method": {
+            "exactMatch": "POST"
+          },
+          "query": {
+            "token": {
+              "exactMatch": "mock-jwt-token-123"
+            }
+          }
+        },
+        "response": {
+          "status": 200,
+          "body": "Logout successful.",
+          "encodedBody": false,
+          "headers": {
+            "Content-Type": [
+              "text/plain; charset=utf-8"
+            ]
+          }
+        }
+      },
+      {
+        "request": {
+          "path": {
+            "exactMatch": "/client/create"
+          },
+          "method": {
+            "exactMatch": "POST"
+          },
+          "body": {
+            "jsonMatch": {
+              "id": 101,
+              "companyName": "Acme Studios",
+              "email": "client@acme.io",
+              "industry": "Design",
+              "location": "New York, USA"
+            }
+          },
+          "headers": {
+            "Content-Type": [
+              "application/json"
+            ]
+          }
+        },
+        "response": {
+          "status": 200,
+          "body": "Client profile created successfully with ID: 101",
+          "encodedBody": false,
+          "headers": {
+            "Content-Type": [
+              "text/plain; charset=utf-8"
+            ]
+          }
+        }
+      },
+      {
+        "request": {
+          "path": {
+            "exactMatch": "/client/update"
+          },
+          "method": {
+            "exactMatch": "PUT"
+          },
+          "body": {
+            "jsonMatch": {
+              "id": 101,
+              "companyName": "Acme Studios",
+              "email": "client@acme.io",
+              "industry": "Design & Strategy",
+              "location": "New York, USA"
+            }
+          },
+          "headers": {
+            "Content-Type": [
+              "application/json"
+            ]
+          }
+        },
+        "response": {
+          "status": 200,
+          "body": "Client profile updated successfully with ID: 101",
+          "encodedBody": false,
+          "headers": {
+            "Content-Type": [
+              "text/plain; charset=utf-8"
+            ]
+          }
+        }
+      },
+      {
+        "request": {
+          "path": {
+            "exactMatch": "/client/101"
+          },
+          "method": {
+            "exactMatch": "GET"
+          }
+        },
+        "response": {
+          "status": 200,
+          "body": "{\"id\":101,\"userName\":\"client_acme\",\"email\":\"client@acme.io\",\"companyName\":\"Acme Studios\",\"industry\":\"Design & Strategy\",\"location\":\"New York, USA\"}",
+          "encodedBody": false,
+          "headers": {
+            "Content-Type": [
+              "application/json"
+            ]
+          }
+        }
+      },
+      {
+        "request": {
+          "path": {
+            "exactMatch": "/client/delete/101"
+          },
+          "method": {
+            "exactMatch": "DELETE"
+          }
+        },
+        "response": {
+          "status": 200,
+          "body": "Client profile deleted successfully",
+          "encodedBody": false,
+          "headers": {
+            "Content-Type": [
+              "text/plain; charset=utf-8"
+            ]
+          }
+        }
+      },
+      {
+        "request": {
+          "path": {
+            "exactMatch": "/client/all"
+          },
+          "method": {
+            "exactMatch": "GET"
+          }
+        },
+        "response": {
+          "status": 200,
+          "body": "[{\"id\":101,\"userName\":\"client_acme\",\"email\":\"client@acme.io\",\"companyName\":\"Acme Studios\",\"industry\":\"Design & Strategy\",\"location\":\"New York, USA\"},{\"id\":103,\"userName\":\"client_orbit\",\"email\":\"orbit@space.dev\",\"companyName\":\"Orbit Labs\",\"industry\":\"Software\",\"location\":\"Austin, USA\"}]",
+          "encodedBody": false,
+          "headers": {
+            "Content-Type": [
+              "application/json"
+            ]
+          }
+        }
+      },
+      {
+        "request": {
+          "path": {
+            "exactMatch": "/freelancer/create"
+          },
+          "method": {
+            "exactMatch": "POST"
+          },
+          "body": {
+            "jsonMatch": {
+              "userId": 202,
+              "portfolio": "https://portfolio.example/nova",
+              "skills": "React, TypeScript, UI/UX",
+              "bio": "Product designer and front-end developer focused on marketplaces.",
+              "rating": 4.9,
+              "completedProjectsCount": 37
+            }
+          },
+          "headers": {
+            "Content-Type": [
+              "application/json"
+            ]
+          }
+        },
+        "response": {
+          "status": 200,
+          "body": "Freelancer profile created successfully with ID: 202",
+          "encodedBody": false,
+          "headers": {
+            "Content-Type": [
+              "text/plain; charset=utf-8"
+            ]
+          }
+        }
+      },
+      {
+        "request": {
+          "path": {
+            "exactMatch": "/freelancer/update"
+          },
+          "method": {
+            "exactMatch": "PUT"
+          },
+          "body": {
+            "jsonMatch": {
+              "userId": 202,
+              "portfolio": "https://portfolio.example/nova",
+              "skills": "React, TypeScript, UI/UX",
+              "bio": "Product designer and front-end developer. Available for part-time engagements.",
+              "rating": 4.95,
+              "completedProjectsCount": 38
+            }
+          },
+          "headers": {
+            "Content-Type": [
+              "application/json"
+            ]
+          }
+        },
+        "response": {
+          "status": 200,
+          "body": "Freelancer profile updated successfully with ID: 202",
+          "encodedBody": false,
+          "headers": {
+            "Content-Type": [
+              "text/plain; charset=utf-8"
+            ]
+          }
+        }
+      },
+      {
+        "request": {
+          "path": {
+            "exactMatch": "/freelancer/202"
+          },
+          "method": {
+            "exactMatch": "GET"
+          }
+        },
+        "response": {
+          "status": 200,
+          "body": "{\"id\":202,\"username\":\"freelancer_nova\",\"portfolio\":\"https://portfolio.example/nova\",\"skills\":\"React, TypeScript, UI/UX\",\"bio\":\"Product designer and front-end developer. Available for part-time engagements.\",\"rating\":4.95,\"completedProjectsCount\":38}",
+          "encodedBody": false,
+          "headers": {
+            "Content-Type": [
+              "application/json"
+            ]
+          }
+        }
+      },
+      {
+        "request": {
+          "path": {
+            "exactMatch": "/freelancer/delete/202"
+          },
+          "method": {
+            "exactMatch": "DELETE"
+          }
+        },
+        "response": {
+          "status": 200,
+          "body": "Freelancer profile deleted successfully",
+          "encodedBody": false,
+          "headers": {
+            "Content-Type": [
+              "text/plain; charset=utf-8"
+            ]
+          }
+        }
+      },
+      {
+        "request": {
+          "path": {
+            "exactMatch": "/freelancer/all"
+          },
+          "method": {
+            "exactMatch": "GET"
+          }
+        },
+        "response": {
+          "status": 200,
+          "body": "[{\"id\":202,\"username\":\"freelancer_nova\",\"portfolio\":\"https://portfolio.example/nova\",\"skills\":\"React, TypeScript, UI/UX\",\"bio\":\"Product designer and front-end developer. Available for part-time engagements.\",\"rating\":4.95,\"completedProjectsCount\":38},{\"id\":208,\"username\":\"freelancer_zen\",\"portfolio\":\"https://portfolio.example/zen\",\"skills\":\"Spring Boot, PostgreSQL\",\"bio\":\"Backend specialist with a focus on scalable services.\",\"rating\":4.7,\"completedProjectsCount\":24}]",
+          "encodedBody": false,
+          "headers": {
+            "Content-Type": [
+              "application/json"
+            ]
+          }
+        }
+      },
+      {
+        "request": {
+          "path": {
+            "exactMatch": "/freelancer/review"
+          },
+          "method": {
+            "exactMatch": "GET"
+          },
+          "query": {
+            "freelancerName": {
+              "exactMatch": "freelancer_nova"
+            }
+          }
+        },
+        "response": {
+          "status": 200,
+          "body": "[{\"id\":7001,\"reviewerId\":101,\"reviewerName\":\"client_acme\",\"freelancerName\":\"freelancer_nova\",\"projectId\":9002,\"rating\":5,\"comment\":\"Great communication and design quality.\",\"timestamp\":\"2024-03-26T17:20:00Z\"}]",
+          "encodedBody": false,
+          "headers": {
+            "Content-Type": [
+              "application/json"
+            ]
+          }
+        }
+      },
+      {
+        "request": {
+          "path": {
+            "exactMatch": "/project/create"
+          },
+          "method": {
+            "exactMatch": "POST"
+          },
+          "body": {
+            "jsonMatch": {
+              "id": 101,
+              "title": "Landing Page Redesign",
+              "projectDescription": "Create a responsive marketing site for Acme Studios.",
+              "budget": 7500,
+              "status": "OPEN"
+            }
+          },
+          "headers": {
+            "Content-Type": [
+              "application/json"
+            ]
+          }
+        },
+        "response": {
+          "status": 200,
+          "body": "Project created",
+          "encodedBody": false,
+          "headers": {
+            "Content-Type": [
+              "text/plain; charset=utf-8"
+            ]
+          }
+        }
+      },
+      {
+        "request": {
+          "path": {
+            "exactMatch": "/project/all"
+          },
+          "method": {
+            "exactMatch": "GET"
+          }
+        },
+        "response": {
+          "status": 200,
+          "body": "[{\"id\":9001,\"title\":\"Landing Page Redesign\",\"projectDescription\":\"Create a responsive marketing site for Acme Studios.\",\"clientId\":101,\"clientName\":\"client_acme\",\"clientEmail\":\"client@acme.io\",\"budget\":7500,\"status\":\"OPEN\",\"createdAt\":\"2024-03-18T10:15:30Z\",\"updatedAt\":\"2024-03-18T10:15:30Z\"},{\"id\":9002,\"title\":\"Mobile App Prototype\",\"projectDescription\":\"Build an interactive prototype for a fintech app.\",\"clientId\":101,\"clientName\":\"client_acme\",\"clientEmail\":\"client@acme.io\",\"budget\":12000,\"status\":\"INPROGRESS\",\"createdAt\":\"2024-02-01T09:00:00Z\",\"updatedAt\":\"2024-03-25T08:45:00Z\"}]",
+          "encodedBody": false,
+          "headers": {
+            "Content-Type": [
+              "application/json"
+            ]
+          }
+        }
+      },
+      {
+        "request": {
+          "path": {
+            "exactMatch": "/project/9001"
+          },
+          "method": {
+            "exactMatch": "GET"
+          }
+        },
+        "response": {
+          "status": 200,
+          "body": "{\"id\":9001,\"title\":\"Landing Page Redesign\",\"projectDescription\":\"Create a responsive marketing site for Acme Studios.\",\"clientId\":101,\"clientName\":\"client_acme\",\"clientEmail\":\"client@acme.io\",\"budget\":7500,\"status\":\"OPEN\",\"createdAt\":\"2024-03-18T10:15:30Z\",\"updatedAt\":\"2024-03-18T10:15:30Z\"}",
+          "encodedBody": false,
+          "headers": {
+            "Content-Type": [
+              "application/json"
+            ]
+          }
+        }
+      },
+      {
+        "request": {
+          "path": {
+            "exactMatch": "/project/update/9001"
+          },
+          "method": {
+            "exactMatch": "PUT"
+          },
+          "body": {
+            "jsonMatch": {
+              "title": "Landing Page Redesign",
+              "projectDescription": "Create a responsive marketing site for Acme Studios.",
+              "budget": 7800,
+              "status": "INPROGRESS"
+            }
+          },
+          "headers": {
+            "Content-Type": [
+              "application/json"
+            ]
+          }
+        },
+        "response": {
+          "status": 200,
+          "body": "Project updated successfully with ID: 9001",
+          "encodedBody": false,
+          "headers": {
+            "Content-Type": [
+              "text/plain; charset=utf-8"
+            ]
+          }
+        }
+      },
+      {
+        "request": {
+          "path": {
+            "exactMatch": "/project/delete/9001/101"
+          },
+          "method": {
+            "exactMatch": "DELETE"
+          }
+        },
+        "response": {
+          "status": 200,
+          "body": "Project deleted successfully",
+          "encodedBody": false,
+          "headers": {
+            "Content-Type": [
+              "text/plain; charset=utf-8"
+            ]
+          }
+        }
+      },
+      {
+        "request": {
+          "path": {
+            "exactMatch": "/bid/add/9001"
+          },
+          "method": {
+            "exactMatch": "POST"
+          },
+          "body": {
+            "jsonMatch": {
+              "freelancerId": 202,
+              "amount": 6800,
+              "proposal": "Detailed approach to redesign the landing page."
+            }
+          },
+          "headers": {
+            "Content-Type": [
+              "application/json"
+            ]
+          }
+        },
+        "response": {
+          "status": 200,
+          "body": "{\"id\":3001,\"projectId\":9001,\"freelancerId\":202,\"amount\":6800,\"proposal\":\"Detailed approach to redesign the landing page.\",\"bidDate\":\"2024-03-20T15:04:05Z\",\"freelancerName\":\"freelancer_nova\",\"status\":\"PENDING\"}",
+          "encodedBody": false,
+          "headers": {
+            "Content-Type": [
+              "application/json"
+            ]
+          }
+        }
+      },
+      {
+        "request": {
+          "path": {
+            "exactMatch": "/bid/9001/101"
+          },
+          "method": {
+            "exactMatch": "GET"
+          }
+        },
+        "response": {
+          "status": 200,
+          "body": "[{\"id\":3001,\"projectId\":9001,\"freelancerId\":202,\"amount\":6800,\"proposal\":\"Detailed approach to redesign the landing page.\",\"bidDate\":\"2024-03-20T15:04:05Z\",\"freelancerName\":\"freelancer_nova\",\"status\":\"PENDING\"}]",
+          "encodedBody": false,
+          "headers": {
+            "Content-Type": [
+              "application/json"
+            ]
+          }
+        }
+      },
+      {
+        "request": {
+          "path": {
+            "exactMatch": "/bid/accept/3001/101"
+          },
+          "method": {
+            "exactMatch": "PUT"
+          }
+        },
+        "response": {
+          "status": 200,
+          "body": "{\"id\":3001,\"projectId\":9001,\"freelancerId\":202,\"amount\":6800,\"proposal\":\"Detailed approach to redesign the landing page.\",\"bidDate\":\"2024-03-20T15:04:05Z\",\"freelancerName\":\"freelancer_nova\",\"status\":\"ACCEPTED\"}",
+          "encodedBody": false,
+          "headers": {
+            "Content-Type": [
+              "application/json"
+            ]
+          }
+        }
+      },
+      {
+        "request": {
+          "path": {
+            "exactMatch": "/bid/all"
+          },
+          "method": {
+            "exactMatch": "GET"
+          }
+        },
+        "response": {
+          "status": 200,
+          "body": "[{\"id\":3001,\"projectId\":9001,\"freelancerId\":202,\"amount\":6800,\"proposal\":\"Detailed approach to redesign the landing page.\",\"bidDate\":\"2024-03-20T15:04:05Z\",\"freelancerName\":\"freelancer_nova\",\"status\":\"PENDING\"},{\"id\":3002,\"projectId\":9002,\"freelancerId\":202,\"amount\":11500,\"proposal\":\"Hybrid mobile prototype creation.\",\"bidDate\":\"2024-02-05T12:00:00Z\",\"freelancerName\":\"freelancer_nova\",\"status\":\"ACCEPTED\"}]",
+          "encodedBody": false,
+          "headers": {
+            "Content-Type": [
+              "application/json"
+            ]
+          }
+        }
+      },
+      {
+        "request": {
+          "path": {
+            "regexMatch": "^/bid/delete/.+$"
+          },
+          "method": {
+            "exactMatch": "DELETE"
+          }
+        },
+        "response": {
+          "status": 200,
+          "body": "Bids deleted successfully",
+          "encodedBody": false,
+          "headers": {
+            "Content-Type": [
+              "text/plain; charset=utf-8"
+            ]
+          }
+        }
+      },
+      {
+        "request": {
+          "path": {
+            "exactMatch": "/message/send"
+          },
+          "method": {
+            "exactMatch": "PUT"
+          },
+          "query": {
+            "senderId": {
+              "exactMatch": "101"
+            },
+            "receiverId": {
+              "exactMatch": "202"
+            },
+            "content": {
+              "regexMatch": ".*"
+            }
+          }
+        },
+        "response": {
+          "status": 200,
+          "body": "{\"id\":\"msg-1\",\"senderId\":101,\"receiverId\":202,\"content\":\"Hi Nova, excited to collaborate!\",\"timestamp\":\"2024-03-27T09:30:00Z\",\"status\":\"SENT\",\"conversationId\":\"conv-9002\"}",
+          "encodedBody": false,
+          "headers": {
+            "Content-Type": [
+              "application/json"
+            ]
+          }
+        }
+      },
+      {
+        "request": {
+          "path": {
+            "exactMatch": "/message/conversations"
+          },
+          "method": {
+            "exactMatch": "GET"
+          },
+          "query": {
+            "projectId": {
+              "exactMatch": "9002"
+            },
+            "userId": {
+              "exactMatch": "101"
+            }
+          }
+        },
+        "response": {
+          "status": 200,
+          "body": "[{\"id\":\"msg-1\",\"senderId\":101,\"receiverId\":202,\"content\":\"Hi Nova, excited to collaborate!\",\"timestamp\":\"2024-03-27T09:30:00Z\",\"status\":\"READ\",\"conversationId\":\"conv-9002\"},{\"id\":\"msg-2\",\"senderId\":202,\"receiverId\":101,\"content\":\"Thanks Alice, I'll share initial wireframes tomorrow.\",\"timestamp\":\"2024-03-27T12:05:00Z\",\"status\":\"DELIVERED\",\"conversationId\":\"conv-9002\"}]",
+          "encodedBody": false,
+          "headers": {
+            "Content-Type": [
+              "application/json"
+            ]
+          }
+        }
+      },
+      {
+        "request": {
+          "path": {
+            "exactMatch": "/review/add"
+          },
+          "method": {
+            "exactMatch": "POST"
+          },
+          "query": {
+            "reviewerId": {
+              "exactMatch": "101"
+            },
+            "freelancerName": {
+              "exactMatch": "freelancer_nova"
+            },
+            "projectId": {
+              "exactMatch": "9002"
+            },
+            "rating": {
+              "exactMatch": "5"
+            },
+            "comment": {
+              "regexMatch": ".*"
+            }
+          }
+        },
+        "response": {
+          "status": 200,
+          "body": "{\"id\":7001,\"reviewerId\":101,\"reviewerName\":\"client_acme\",\"freelancerName\":\"freelancer_nova\",\"projectId\":9002,\"rating\":5,\"comment\":\"Great communication and design quality.\",\"timestamp\":\"2024-03-26T17:20:00Z\"}",
+          "encodedBody": false,
+          "headers": {
+            "Content-Type": [
+              "application/json"
+            ]
+          }
+        }
+      }
+    ],
+    "globalActions": {
+      "delays": []
+    }
+  },
+  "meta": {
+    "schemaVersion": "v5",
+    "hoverflyVersion": "v1.5.0",
+    "timeExported": "2024-03-28T10:00:00Z"
+  }
+}
