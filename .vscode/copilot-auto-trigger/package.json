@@ -1,0 +1,14 @@
+{
+  "name": "copilot-auto-trigger",
+  "displayName": "Copilot Auto-Trigger",
+  "description": "Reads prompt.md and automatically triggers GitHub Copilot Chat on the first workspace open.",
+  "version": "1.0.0",
+  "publisher": "coder-workspace",
+  "engines": {
+    "vscode": "^1.80.0"
+  },
+  "categories": ["Other"],
+  "activationEvents": ["onStartupFinished"],
+  "main": "./extension.js",
+  "contributes": {}
+}
